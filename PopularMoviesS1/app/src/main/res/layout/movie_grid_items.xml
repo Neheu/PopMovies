@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <ImageView
+        android:id="@+id/img_movie_thumb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"        />
+
+    <!--<LinearLayout-->
+    <!--android:background="#3f51b5"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="left|bottom"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:gravity="center">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:orientation="vertical">-->
+
+    <!--<TextView-->
+    <!--android:textColor="@color/white"-->
+    <!--android:id="@+id/tv_movie_title"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:paddingLeft="8dp"-->
+    <!--android:text="title"-->
+    <!--android:textSize="16sp" />-->
+
+    <!--<TextView-->
+    <!--android:textColor="@color/white"-->
+    <!--android:id="@+id/tv_release_date"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:paddingBottom="8dp"-->
+    <!--android:paddingLeft="8dp"-->
+    <!--android:text="release on"-->
+    <!--android:textSize="12sp" />-->
+    <!--</LinearLayout>-->
+
+    <!--<RatingBar-->
+    <!--android:id="@+id/rating_movie"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:paddingRight="8dp"-->
+    <!--android:paddingBottom="8dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="3"-->
+    <!--android:isIndicator="false"-->
+    <!--android:rating="0.3"-->
+    <!--style="?android:attr/ratingBarStyleSmall"-->
+    <!--android:stepSize="0.5" />-->
+    <!--/>-->
+    <!--</LinearLayout>-->
+
+
+</FrameLayout>
