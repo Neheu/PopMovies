@@ -10,6 +10,7 @@ import android.view.View;
 
 /**
  * Created by Neha on 2/8/2017.
+ * this code has been copied from http://stackoverflow.com/questions/24618829/how-to-add-dividers-and-spaces-between-items-in-recyclerview 
  */
     public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
