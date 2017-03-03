@@ -1,4 +1,4 @@
-package movies.proj.com.popularmoviess1;
+package movies.proj.com.popularmovies;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +12,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import movies.proj.com.popularmoviess1.core.PopularMovies;
-import movies.proj.com.popularmoviess1.utility.ConstantsUtility;
+import movies.proj.com.popularmovies.data.PopularMovies;
+import movies.proj.com.popularmovies.utility.ConstantsUtility;
 
 /**
  * Created by hp on 2/5/2017.
@@ -45,7 +45,7 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
     @Override
     public void onBindViewHolder(MoviesViewHolder holder, int position) {
         if (resultDataList.size() != 0) {
-            String imgUrl = ConstantsUtility.IMG_BASE_URL + ConstantsUtility.IMG_SIZES_LIST[4] + resultDataList.get(position).getPosterPath();
+            String imgUrl = ConstantsUtility.POSTER_IMAGE_BASE+ resultDataList.get(position).posterPath;
             Picasso.with(context).load(imgUrl).into(holder.movie_thumb);
 
         }

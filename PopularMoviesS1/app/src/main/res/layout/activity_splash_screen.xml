@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="movies.proj.com.popularmoviess1.activity.SplashScreenActivity">
+    tools:context="movies.proj.com.popularmovies.activity.SplashScreenActivity">
 <ImageView
     android:layout_width="match_parent"
     android:layout_height="match_parent"

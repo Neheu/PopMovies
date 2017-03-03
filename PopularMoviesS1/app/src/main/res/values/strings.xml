@@ -7,9 +7,16 @@
     <string-array name="choices">
         <item>Most Popular</item>
         <item>Highest Rated</item>
+        <item>Favorites</item>
     </string-array>
+
     <string name="title_activity_popular_movie">MovieDetail</string>
     <string name="mark_as_fav">Mark as \nfavorite</string>
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
-    <string name="trailers">Trailers :</string>
+    <string name="trailers">Trailers</string>
+    <string name="watch_trailers">Watch Trailers</string>
+    <string name="reviews">Reviews</string>
+    <string name="watch_trailer">Watch Trailer</string>
+
+
 </resources>

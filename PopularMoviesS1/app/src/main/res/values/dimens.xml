@@ -5,5 +5,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="list_spacing">4dp</dimen>
     <dimen name="list_image_size">60dp</dimen>
+    <dimen name="app_bar_height">200dp</dimen>
 
 </resources>

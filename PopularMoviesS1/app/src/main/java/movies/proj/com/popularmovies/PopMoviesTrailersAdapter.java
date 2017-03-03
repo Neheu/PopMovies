@@ -1,10 +1,11 @@
-package movies.proj.com.popularmoviess1;
+package movies.proj.com.popularmovies;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -26,7 +27,7 @@ public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrai
 
     @Override
     public void onBindViewHolder(PopMoviesTrailedViewHolder holder, int position) {
-    holder.trailerText.setText("Trailer "+String.valueOf(position+1));
+//    holder.trailerText.setText("Trailer "+String.valueOf(position+1));
     }
 
     @Override
@@ -36,11 +37,11 @@ public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrai
 
     class PopMoviesTrailedViewHolder extends RecyclerView.ViewHolder
     {
-        TextView trailerText;
+        ImageView trailerThumb;
 
         public PopMoviesTrailedViewHolder(View itemView) {
             super(itemView);
-            trailerText = (TextView) itemView.findViewById(R.id.tv_trailer);
+            trailerThumb= (ImageView) itemView.findViewById(R.id.trailer_thumbnail);
 
         }
     }

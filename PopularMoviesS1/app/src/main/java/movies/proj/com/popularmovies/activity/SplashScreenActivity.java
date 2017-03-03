@@ -1,17 +1,11 @@
-package movies.proj.com.popularmoviess1.activity;
+package movies.proj.com.popularmovies.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 
-import movies.proj.com.popularmoviess1.PopularMoviesAdapter;
-import movies.proj.com.popularmoviess1.R;
-import movies.proj.com.popularmoviess1.core.PopularMovies;
+import movies.proj.com.popularmovies.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 

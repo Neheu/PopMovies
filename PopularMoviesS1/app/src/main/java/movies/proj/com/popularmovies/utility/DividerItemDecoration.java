@@ -1,4 +1,4 @@
-package movies.proj.com.popularmoviess1.utility;
+package movies.proj.com.popularmovies.utility;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,7 +10,7 @@ import android.view.View;
 
 /**
  * Created by Neha on 2/8/2017.
- * this code has been copied from http://stackoverflow.com/questions/24618829/how-to-add-dividers-and-spaces-between-items-in-recyclerview 
+ * this code has been copied from http://stackoverflow.com/questions/24618829/how-to-add-dividers-and-spaces-between-items-in-recyclerview
  */
     public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 

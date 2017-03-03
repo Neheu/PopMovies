@@ -1,4 +1,4 @@
-package movies.proj.com.popularmoviess1;
+package movies.proj.com.popularmovies;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

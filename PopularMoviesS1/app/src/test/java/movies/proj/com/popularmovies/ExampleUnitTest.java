@@ -1,4 +1,4 @@
-package movies.proj.com.popularmoviess1;
+package movies.proj.com.popularmovies;
 
 import org.junit.Test;
 

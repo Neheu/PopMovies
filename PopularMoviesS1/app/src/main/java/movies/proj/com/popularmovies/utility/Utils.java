@@ -1,14 +1,11 @@
-package movies.proj.com.popularmoviess1.utility;
+package movies.proj.com.popularmovies.utility;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-
-import movies.proj.com.popularmoviess1.core.PopularMovies;
 
 /**
  * Created by Neha on 2/5/2017.

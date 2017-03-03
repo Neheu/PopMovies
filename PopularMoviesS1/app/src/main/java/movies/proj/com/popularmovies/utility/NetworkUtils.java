@@ -1,4 +1,4 @@
-package movies.proj.com.popularmoviess1.utility;
+package movies.proj.com.popularmovies.utility;
 
 import android.net.Uri;
 import android.view.inputmethod.InputConnection;
