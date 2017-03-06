@@ -16,3 +16,6 @@ PopularMoviesS1/gradle/wrapper/gradle-wrapper.properties
 PopularMoviesS1/gradlew
 *.bat
 PopularMoviesS1/PopularMoviesS1.iml
+PopularMoviesS1/.idea/misc.xml
+PopularMoviesS1/.idea/misc.xml
+*.iml

@@ -45,7 +45,7 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
     @Override
     public void onBindViewHolder(MoviesViewHolder holder, int position) {
         if (resultDataList.size() != 0) {
-            String imgUrl = ConstantsUtility.POSTER_IMAGE_BASE+ resultDataList.get(position).posterPath;
+            String imgUrl = ConstantsUtility.POSTER_IMAGE_BASE + resultDataList.get(position).posterPath;
             Picasso.with(context).load(imgUrl).into(holder.movie_thumb);
 
         }
@@ -75,7 +75,7 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
     }
 
     public interface onMovieThumbClickHandler {
-         void onClick(PopularMovies dataHoler);
+        void onClick(PopularMovies dataHoler);
 
     }
 

@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import movies.proj.com.popularmovies.data.MovieTrailers;
 import movies.proj.com.popularmovies.data.PopularMovies;
 import movies.proj.com.popularmovies.data.PopularMoviesContantProvider;
 import movies.proj.com.popularmovies.data.PopularMoviesContract;
@@ -25,7 +26,7 @@ public class PopularMovieJsonUtil {
     This method will help to parse data ,got from popular movies url and store that into PopualMovies object for further use.
     @param moviesJsonString, use to get the json string, recieved from server.
      */
-    public static ArrayList<PopularMovies> getParseDataFromJSon(final Context context, final String moviesJsonString) {
+    public static ArrayList<PopularMovies> parseMoviesData(final Context context, final String moviesJsonString) {
 
 
         ArrayList<PopularMovies> listOfMovies = new ArrayList<>();
@@ -44,6 +45,29 @@ public class PopularMovieJsonUtil {
                         jsonObject.getDouble(ConstantsUtility.MOVIE_POPULARITY), jsonObject.getInt(ConstantsUtility.MOVIE_VOTE_COUNT),
                         jsonObject.getBoolean(ConstantsUtility.MOVIE_VIDEO), jsonObject.getDouble(ConstantsUtility.MOVIE_VOTE_AVERAGE));
                 new PopularMoviesDBHelper(context).insetMoviesListToDb(dataHolder);
+                listOfMovies.add(dataHolder);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return listOfMovies;
+
+    }
+    public static ArrayList<MovieTrailers> parseTrailersData(final Context context, final String moviesJsonString) {
+
+
+        ArrayList<MovieTrailers> listOfMovies = new ArrayList<>();
+
+        try {
+            JSONObject moviesJsonObject = new JSONObject(moviesJsonString);
+            JSONArray moviesJsonArray = moviesJsonObject.getJSONArray(ConstantsUtility.MOVIE_RESULT);
+            for (int i = 0; i < moviesJsonArray.length(); i++) {
+                JSONObject jsonObject = moviesJsonArray.getJSONObject(i);
+
+                MovieTrailers dataHolder = new MovieTrailers(jsonObject.getString(ConstantsUtility.TRAILER_ID),
+                        jsonObject.getString(ConstantsUtility.TRAILER_KEY));
+               // new PopularMoviesDBHelper(context).insetMoviesListToDb(dataHolder);
                 listOfMovies.add(dataHolder);
             }
 

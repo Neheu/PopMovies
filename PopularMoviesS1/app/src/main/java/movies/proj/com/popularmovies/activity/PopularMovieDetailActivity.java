@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,24 +21,14 @@ import movies.proj.com.popularmovies.data.PopularMoviesContract;
 import movies.proj.com.popularmovies.data.PopularMoviesDBHelper;
 import movies.proj.com.popularmovies.utility.ConstantsUtility;
 
-public class PopularMovieDetailActivity extends AppCompatActivity {
-    //    private RecyclerView mRecyclerView;
-//    private Intent mIntent;
-//    private String mThumbUrl;
-//    private TextView mMovieTitle;
-//    private TextView mReleaseDate;
-//    private ImageView movieathumbImageView;
-//    private TextView mRatingTextView;
-//    private TextView mOverViemarkFavButtonw;
-//    private PopMoviesTrailersAdapter mMoviesTrailersAdapter;
-//    private ViewPager mViewPager;
-//    private PopularMovies mMoviData;
+public class PopularMovieDetailActivity extends AppCompatActivity  {
+
     @BindView(R.id.detail_toolbar)
     Toolbar mToolbar;
     @BindView(R.id.mark_fav)
     FloatingActionButton markFavMovie;
     private Context context;
-    private PopularMovies data ;
+    private PopularMovies data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +39,7 @@ public class PopularMovieDetailActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         context = PopularMovieDetailActivity.this;
         data = getIntent().getExtras().getParcelable(ConstantsUtility.INTENT_MOVIE_DATA);
+
         checkIfMarkedFav();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
@@ -70,24 +62,34 @@ public class PopularMovieDetailActivity extends AppCompatActivity {
     }
 
     public void markFavMovieClickHandler(View view) {
-        ContentValues values = checkIfMarkedFav();
+        ContentValues values = updateFavoriteMovie();
         String selection = PopularMoviesContract.PopularMoviesEntry.MOVIE_ID + " = '" + data.id + "'";
 
         context.getContentResolver().update(PopularMoviesContract.PopularMoviesEntry.CONTENT_URI, values, selection, null);
 
     }
 
-    private ContentValues checkIfMarkedFav() {
+    private ContentValues updateFavoriteMovie() {
         ContentValues values = new ContentValues();
         boolean isAlreadyMarkedAsFav = new PopularMoviesDBHelper(context).isMovieAlreadyMarkedAsFav(data.id);
         if (isAlreadyMarkedAsFav) {
             values.put(PopularMoviesContract.PopularMoviesEntry.IS_MARKED_FAVORITE, false);
-            markFavMovie.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_favorite));
+            markFavMovie.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_unfavorite));
         } else {
             values.put(PopularMoviesContract.PopularMoviesEntry.IS_MARKED_FAVORITE, true);
-            markFavMovie.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_unfavorite));
+            markFavMovie.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite));
         }
         return values;
     }
+
+    private void checkIfMarkedFav() {
+        boolean isAlreadyMarkedAsFav = new PopularMoviesDBHelper(context).isMovieAlreadyMarkedAsFav(data.id);
+        if (isAlreadyMarkedAsFav) {
+            markFavMovie.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite));
+        } else {
+            markFavMovie.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_unfavorite));
+        }
+    }
+
 
 }

@@ -15,10 +15,11 @@ public class ConstantsUtility {
     public static final String API_KEY = "864a8cd60556e8c00b769d63261384c1";
     public static final String IMG_BASE_URL = "http://image.tmdb.org/t/p/";
 
+
     //------------------------ Picasso Image Constants---------//
     public static String[] IMG_SIZES_LIST = {"w92", "w154", "w185", "w342", "w500", "w780"};
     public static final String POSTER_IMAGE_BASE = IMG_BASE_URL + IMG_SIZES_LIST[4];
-    public static final String BACKDROP_IMG_BASE_URL="http://image.tmdb.org/t/p/original";
+    public static final String BACKDROP_IMG_BASE_URL = "http://image.tmdb.org/t/p/original";
 
 
     //------------- Intents Constants ---------------------//
@@ -46,6 +47,9 @@ public class ConstantsUtility {
     public static final String MOVIE_BACKDROP_PATH = "backdrop_path";
     public static final String MOVIE_VOTE_COUNT = "vote_count";
     public static final String MOVIE_VIDEO = "video";
+
+    public static final String TRAILER_ID = "id";
+    public static final String TRAILER_KEY = "key";
 
 
 }

@@ -7,11 +7,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.os.Environment;
 
+import java.io.File;
 import java.lang.reflect.Modifier;
 import java.net.URI;
 
 import movies.proj.com.popularmovies.utility.DatabaseUtils;
+
+import static movies.proj.com.popularmovies.utility.DatabaseUtils.DATABASE_NAME;
 
 /**
  * Created by ${Neha} on 2/23/2017.
@@ -22,7 +26,7 @@ public class PopularMoviesDBHelper extends SQLiteOpenHelper {
     Context context;
 
     public PopularMoviesDBHelper(Context context) {
-        super(context, DatabaseUtils.DATABASE_NAME, null, DatabaseUtils.DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DatabaseUtils.DATABASE_VERSION);
         this.context = context;
     }
 
@@ -62,23 +66,26 @@ public class PopularMoviesDBHelper extends SQLiteOpenHelper {
         context.getContentResolver().insert(PopularMoviesContract.PopularMoviesEntry.CONTENT_URI, contentValues);
     }
 
+    boolean isMarked;
+
     public boolean isMovieAlreadyMarkedAsFav(int id) {
         ContentResolver mContentResolver = context.getContentResolver();
-        boolean isMarked = false;
-        String selection = PopularMoviesContract.PopularMoviesEntry.MOVIE_ID + " = '" + id + "'";
+        int value;
+        String selection = PopularMoviesContract.PopularMoviesEntry.MOVIE_ID + " = " + id;
 
         Cursor cursor = mContentResolver.query(PopularMoviesContract.PopularMoviesEntry.CONTENT_URI,
-                new String[]{PopularMoviesContract.PopularMoviesEntry.MOVIE_ID,PopularMoviesContract.PopularMoviesEntry.IS_MARKED_FAVORITE}, selection, null,
+                new String[]{PopularMoviesContract.PopularMoviesEntry.MOVIE_ID, PopularMoviesContract.PopularMoviesEntry.IS_MARKED_FAVORITE}, selection, null,
                 null);
 
         if (cursor.moveToFirst()) {
-            boolean value = (cursor.getInt(cursor.getColumnIndex(PopularMoviesContract.PopularMoviesEntry.IS_MARKED_FAVORITE)))==0;
-            if (value)
+            value = (cursor.getInt(cursor.getColumnIndex(PopularMoviesContract.PopularMoviesEntry.IS_MARKED_FAVORITE))) ;
+            if (value==1) {
                 //not marked
+                isMarked = true;
+                cursor.close();
+            } else {
                 isMarked = false;
-            cursor.close();
-        } else {
-            isMarked = true;
+            }
         }
         return isMarked;
     }

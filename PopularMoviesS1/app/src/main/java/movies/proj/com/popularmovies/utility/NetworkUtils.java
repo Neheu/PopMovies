@@ -23,6 +23,7 @@ public class NetworkUtils {
     private static final String apiParam = "api_key";
     private static final String popular = "popular";
     private static final String topRated = "top_rated";
+    private static final String video="videos";
 
 
     /*
@@ -39,6 +40,22 @@ public class NetworkUtils {
             appendPath = ConstantsUtility.TOP_RATED_URL;
 
         Uri uri = Uri.parse(ConstantsUtility.BASE_URL).buildUpon()
+                .appendEncodedPath(appendPath)
+                .appendQueryParameter(apiParam, ConstantsUtility.API_KEY)
+                .build();
+        URL movieUrl = null;
+        try {
+            movieUrl = new URL(uri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return movieUrl;
+    }
+    public static URL buildUrlTrailes(int id) {
+        String appendPath = video;
+
+        Uri uri = Uri.parse(ConstantsUtility.BASE_URL).buildUpon()
+                .appendPath(String.valueOf(id))
                 .appendEncodedPath(appendPath)
                 .appendQueryParameter(apiParam, ConstantsUtility.API_KEY)
                 .build();

@@ -1,30 +1,24 @@
 package movies.proj.com.popularmovies.activity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -39,6 +33,8 @@ import movies.proj.com.popularmovies.utility.ConstantsUtility;
 import movies.proj.com.popularmovies.utility.NetworkUtils;
 import movies.proj.com.popularmovies.utility.PopularMovieJsonUtil;
 import movies.proj.com.popularmovies.utility.Utils;
+
+import static android.R.attr.id;
 
 public class PopularMoviesActivity extends AppCompatActivity implements PopularMoviesAdapter.onMovieThumbClickHandler,
         LoaderManager.LoaderCallbacks<ArrayList<PopularMovies>> {
@@ -166,7 +162,7 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
     }
 
     private ArrayList<PopularMovies> getPopularMoviesJsonObjectFromString(String dataToParse) {
-        return PopularMovieJsonUtil.getParseDataFromJSon(PopularMoviesActivity.this, dataToParse);
+        return PopularMovieJsonUtil.parseMoviesData(PopularMoviesActivity.this, dataToParse);
     }
 
     @Override
@@ -234,6 +230,7 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
         //set progressbar visibility gone,as data is loaded
         setDataGridVisible();
     }
+
 
 
 }
