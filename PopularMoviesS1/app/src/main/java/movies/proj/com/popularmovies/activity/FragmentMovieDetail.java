@@ -52,10 +52,7 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
     ImageView mMoviePosterView;
     @BindView(R.id.movie_user_vote)
     TextView mMovieVote;
-    @BindView(R.id.button_movie_reviews)
-    Button mButtonReviews;
-    @BindView(R.id.button_watch_trailer)
-    Button mButtonWatchTrailer;
+
     //    @BindView(R.id.tv_rating)
 //    RatingBar mUserRating;
     @BindView(R.id.tabLayout)
