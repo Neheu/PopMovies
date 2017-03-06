@@ -11,6 +11,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,7 @@ import movies.proj.com.popularmovies.data.PopularMovies;
 import movies.proj.com.popularmovies.utility.ConstantsUtility;
 import movies.proj.com.popularmovies.utility.NetworkUtils;
 import movies.proj.com.popularmovies.utility.PopularMovieJsonUtil;
+import movies.proj.com.popularmovies.utility.Utils;
 
 /**
  * Created by Neha on 04-03-2017.
@@ -52,7 +55,10 @@ PopMoviesTrailersAdapter.onTrailerThumbClickHandler{
         View rootView = inflater.inflate(R.layout.trailer_tab_layout, container, false);
         ButterKnife.bind(this,rootView);
         clickHandler = this;
-
+        rv_trailer.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rv_trailer.setLayoutManager(linearLayoutManager);
         getActivity().getSupportLoaderManager().initLoader(111, bundleForLoader, callback);
 
         return rootView;
@@ -119,6 +125,7 @@ PopMoviesTrailersAdapter.onTrailerThumbClickHandler{
     public void onLoadFinished(Loader<ArrayList<MovieTrailers>> loader, ArrayList<MovieTrailers> data) {
         trailersList =data;
 
+
         PopMoviesTrailersAdapter adapter = new PopMoviesTrailersAdapter(getActivity(),trailersList,clickHandler);
         rv_trailer.setAdapter(adapter);
 
@@ -131,7 +138,7 @@ PopMoviesTrailersAdapter.onTrailerThumbClickHandler{
 
     @Override
     public void onClick(MovieTrailers dataHoler) {
-        watchYoutubeVideo("");
+        watchYoutubeVideo(dataHoler.key);
     }
 
 

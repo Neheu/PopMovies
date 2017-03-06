@@ -32,9 +32,6 @@ public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrai
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
         View layoutView = layoutInflater.inflate(layoutId, parent, shouldAttachToParentImmediately);
-        int height = parent.getMeasuredHeight() / 4;
-        layoutView.setMinimumHeight(height);
-
         return new PopMoviesTrailedViewHolder(layoutView);
     }
 
@@ -53,8 +50,9 @@ public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrai
     @Override
     public void onBindViewHolder(PopMoviesTrailedViewHolder holder, int position) {
         if (resultDataList.size() != 0) {
-            String imgUrl = ConstantsUtility.BASE_URL + resultDataList.get(position).id+"/"+ConstantsUtility.MOVIE_VIDEO;
-            Picasso.with(context).load(imgUrl).into(holder.trailerThumb);
+//            String imgUrl = ConstantsUtility.POSTER_IMAGE_BASE + resultDataList.get(position).posterPath;
+//            Picasso.with(context).load(imgUrl).into(holder.trailerThumb);
+            holder.trailerText.setText(position + 1);
 
         }
     }
@@ -66,10 +64,12 @@ public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrai
 
     class PopMoviesTrailedViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView trailerThumb;
+        TextView trailerText;
 
         public PopMoviesTrailedViewHolder(View itemView) {
             super(itemView);
-            trailerThumb = (ImageView) itemView.findViewById(R.id.trailer_thumbnail);
+            //trailerThumb = (ImageView) itemView.findViewById(R.id.trailer_thumbnail);
+            trailerText = (TextView) itemView.findViewById(R.id.tv_trailer);
 
         }
 

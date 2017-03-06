@@ -56,12 +56,14 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
     Button mButtonReviews;
     @BindView(R.id.button_watch_trailer)
     Button mButtonWatchTrailer;
-    @BindView(R.id.movie_user_ratingbar)
-    RatingBar mUserRatingBar;
+    //    @BindView(R.id.tv_rating)
+//    RatingBar mUserRating;
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
     @BindView(R.id.pager)
     ViewPager viewPager;
+    @BindView(R.id.tv_rating)
+    TextView userRating;
 
     public FragmentMovieDetail() {
     }
@@ -72,7 +74,7 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
         if (getArguments().containsKey(ConstantsUtility.INTENT_MOVIE_DATA)) {
             mMovie = getArguments().getParcelable(ConstantsUtility.INTENT_MOVIE_DATA);
         }
-        ConstantsUtility.SELECTED_MOVIE_ID=mMovie.id;
+        ConstantsUtility.SELECTED_MOVIE_ID = mMovie.id;
     }
 
     @Override
@@ -104,10 +106,9 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
         mMovieOverviewView.setText(mMovie.overview);
         mMovieReleaseDateView.setText(mMovie.releaseDate);
         int rating = (mMovie.voteCount * 5) / 100;
-        mMovieVote.setText(String.valueOf(mMovie.voteAverage) + "/10");
+        userRating.setText("Rating- " + String.valueOf(rating));
+        mMovieVote.setText(getString(R.string.tmdb_rating) + "- " + String.valueOf(mMovie.voteAverage) + "/10");
 
-
-        mUserRatingBar.setNumStars(rating);
         Picasso.with(getActivity())
                 .load(ConstantsUtility.POSTER_IMAGE_BASE + mMovie.posterPath)
                 .config(Bitmap.Config.RGB_565)

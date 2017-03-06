@@ -3,11 +3,20 @@
     android:layout_height="wrap_content"
     android:foreground="?android:attr/selectableItemBackground">
 
-    <ImageView
-        android:id="@+id/trailer_thumbnail"
+    <!--<ImageView-->
+        <!--android:id="@+id/trailer_thumbnail"-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:scaleType="centerCrop" />-->
+    <TextView
+        android:id="@+id/tv_trailer"
+        android:background="@color/colorAccent"
         android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:scaleType="centerCrop" />
+        android:layout_height="150dp"
+        android:text="Trailer"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="28sp"/>
 
     <ImageView
         android:layout_width="wrap_content"

@@ -35,7 +35,10 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
 
         return new MoviesViewHolder(layoutView);
     }
-
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
     public PopularMoviesAdapter(final Context actContext, final ArrayList<PopularMovies> moviesDataList, final onMovieThumbClickHandler handler) {
         this.context = actContext;
         this.resultDataList = moviesDataList;
