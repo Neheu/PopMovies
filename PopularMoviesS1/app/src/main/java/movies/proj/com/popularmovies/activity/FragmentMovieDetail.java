@@ -33,8 +33,7 @@ import movies.proj.com.popularmovies.utility.ConstantsUtility;
  * Created by Neha on 01-03-2017.
  */
 
-public class FragmentMovieDetail extends Fragment implements  TabLayout.OnTabSelectedListener
-{
+public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSelectedListener {
     @SuppressWarnings("unused")
     public static final String TAG = FragmentMovieDetail.class.getSimpleName();
     /**
@@ -45,7 +44,6 @@ public class FragmentMovieDetail extends Fragment implements  TabLayout.OnTabSel
     public static final String EXTRA_REVIEWS = "EXTRA_REVIEWS";
 
     private PopularMovies mMovie;
-
     @BindView(R.id.movie_overview)
     TextView mMovieOverviewView;
     @BindView(R.id.movie_release_date)
@@ -74,7 +72,7 @@ public class FragmentMovieDetail extends Fragment implements  TabLayout.OnTabSel
         if (getArguments().containsKey(ConstantsUtility.INTENT_MOVIE_DATA)) {
             mMovie = getArguments().getParcelable(ConstantsUtility.INTENT_MOVIE_DATA);
         }
-        setHasOptionsMenu(true);
+        ConstantsUtility.SELECTED_MOVIE_ID=mMovie.id;
     }
 
     @Override
@@ -101,7 +99,7 @@ public class FragmentMovieDetail extends Fragment implements  TabLayout.OnTabSel
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.movie_detail, container, false);
-        ButterKnife.bind(getActivity(), rootView);
+        ButterKnife.bind(this, rootView);
 
         mMovieOverviewView.setText(mMovie.overview);
         mMovieReleaseDateView.setText(mMovie.releaseDate);
@@ -117,8 +115,9 @@ public class FragmentMovieDetail extends Fragment implements  TabLayout.OnTabSel
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.watch_trailer)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.reviews)));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        viewPager.setAdapter(new TrailerReviewsAdapter(getActivity().getSupportFragmentManager(),tabLayout.getTabCount()));
-
+        viewPager.setAdapter(new TrailerReviewsAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount()));
+        //Adding onTabSelectedListener to swipe views
+        tabLayout.setOnTabSelectedListener(this);
 //        // For horizontal list of trailers
 //        LinearLayoutManager layoutManager
 //                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -203,9 +202,8 @@ public class FragmentMovieDetail extends Fragment implements  TabLayout.OnTabSel
                     TrailersTabFragment tab1 = new TrailersTabFragment();
                     return tab1;
                 case 1:
-//                    Tab2 tab2 = new Tab2();
-//                    return tab2;
-
+                    TrailersTabFragment tab2 = new TrailersTabFragment();
+                    return tab2;
                 default:
                     return null;
             }

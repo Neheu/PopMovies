@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 
 import android.support.v4.content.ContextCompat;
@@ -21,12 +22,15 @@ import movies.proj.com.popularmovies.data.PopularMoviesContract;
 import movies.proj.com.popularmovies.data.PopularMoviesDBHelper;
 import movies.proj.com.popularmovies.utility.ConstantsUtility;
 
-public class PopularMovieDetailActivity extends AppCompatActivity  {
+public class PopularMovieDetailActivity extends AppCompatActivity {
 
-    @BindView(R.id.detail_toolbar)
-    Toolbar mToolbar;
+
     @BindView(R.id.mark_fav)
+    @Nullable
     FloatingActionButton markFavMovie;
+    @BindView(R.id.detail_toolbar)
+    @Nullable
+    Toolbar mToolbar;
     private Context context;
     private PopularMovies data;
 

@@ -17,6 +17,8 @@
     <string name="watch_trailers">Watch Trailers</string>
     <string name="reviews">Reviews</string>
     <string name="watch_trailer">Watch Trailer</string>
+    <string name="please_wait">Please wait</string>
+    <string name="loading">Loading</string>
 
 
 </resources>

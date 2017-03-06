@@ -53,7 +53,7 @@ public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrai
     @Override
     public void onBindViewHolder(PopMoviesTrailedViewHolder holder, int position) {
         if (resultDataList.size() != 0) {
-            String imgUrl = ConstantsUtility.POSTER_IMAGE_BASE + resultDataList.get(position).id;
+            String imgUrl = ConstantsUtility.BASE_URL + resultDataList.get(position).id+"/"+ConstantsUtility.MOVIE_VIDEO;
             Picasso.with(context).load(imgUrl).into(holder.trailerThumb);
 
         }

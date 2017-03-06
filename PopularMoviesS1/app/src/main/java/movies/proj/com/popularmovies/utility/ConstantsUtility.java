@@ -6,6 +6,7 @@ import movies.proj.com.popularmovies.data.PopularMovies;
  * Created by Neha on 2/6/2017.
  */
 public class ConstantsUtility {
+    public static int SELECTED_MOVIE_ID = 0;
 
     //--------------- Network Constants---------------//
 
