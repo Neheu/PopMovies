@@ -40,6 +40,7 @@ public class PopularMoviesContract {
         public static final String HAS_VIDEO = "has_video";
         public static final String VOTE_AVERAGE = "vote_average";
         public static final String IS_MARKED_FAVORITE = "is_favorite";
+        public static final String SORT_TYPE ="sort_type";
 
 
     }

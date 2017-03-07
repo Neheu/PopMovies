@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="movies.proj.com.popularmovies" >
+    package="movies.proj.com.popularmovies">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.PopularMoviesActivity"
+            android:name=".activity.main.PopularMoviesActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".activity.PopularMovieDetailActivity"
+            android:name=".activity.movie_details.PopularMovieDetailActivity"
             android:label="@string/title_activity_popular_movie"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".activity.SplashScreenActivity"
-            android:label="@string/title_activity_splash_screen" >
+            android:name=".activity.main.SplashScreenActivity"
+            android:label="@string/title_activity_splash_screen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
             android:name=".data.PopularMoviesContantProvider"
             android:authorities="movies.proj.com.popularmovies"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 
 </manifest>

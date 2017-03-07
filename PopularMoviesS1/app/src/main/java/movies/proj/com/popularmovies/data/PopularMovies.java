@@ -25,6 +25,7 @@ public class PopularMovies implements Parcelable {
     public int voteCount;
     public boolean hasVideo;
     public double voteAverage;
+    public int sortType;
 
     private ArrayList<PopularMovies> popularMoviesArrayList;
 
@@ -42,6 +43,7 @@ public class PopularMovies implements Parcelable {
         voteCount = in.readInt();
         hasVideo = in.readByte() != 0;
         voteAverage = in.readDouble();
+        sortType = in.readInt();
     }
 
     public static final Creator<PopularMovies> CREATOR = new Creator<PopularMovies>() {
@@ -58,7 +60,7 @@ public class PopularMovies implements Parcelable {
 
     public PopularMovies(String path, boolean adult, String overview, String releaseDate,
                          int id, String orignalTitle, String orignalLanguage, String title,
-                         String backdropPath, double popularity, int voteCount, boolean isVideo, double voteAverage) {
+                         String backdropPath, double popularity, int voteCount, boolean isVideo, double voteAverage, int sortType) {
 
         this.posterPath = path;
         isAdult = adult;
@@ -73,6 +75,7 @@ public class PopularMovies implements Parcelable {
         this.voteCount = voteCount;
         this.hasVideo = isVideo;
         this.voteAverage = voteAverage;
+        this.sortType = sortType;
 
     }
 
@@ -98,5 +101,6 @@ public class PopularMovies implements Parcelable {
         dest.writeInt(voteCount);
         dest.writeByte((byte) (hasVideo ? 1 : 0));
         dest.writeDouble(voteAverage);
+        dest.writeInt(sortType);
     }
 }

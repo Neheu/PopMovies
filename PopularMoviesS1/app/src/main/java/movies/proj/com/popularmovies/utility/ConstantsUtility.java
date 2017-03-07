@@ -52,5 +52,13 @@ public class ConstantsUtility {
     public static final String TRAILER_ID = "id";
     public static final String TRAILER_KEY = "key";
 
+    /*Define type of sorting,
+    * 0- Popular
+    * 1- High rated
+    * 2- Myfavorites*/
+    public static int[] MOVIE_SORT_TYPE = new int[]{0, 1, 2};
+    /* Define end point to get particular type of movie list*/
+    public static String[] MOVIE_SORT_ENDPOINT = new String[]{POPULAR_URL, TOP_RATED_URL};
+
 
 }

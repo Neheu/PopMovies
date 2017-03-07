@@ -62,6 +62,7 @@ public class PopularMoviesDBHelper extends SQLiteOpenHelper {
         contentValues.put(PopularMoviesContract.PopularMoviesEntry.VOTE_AVERAGE, dataHolder.voteAverage);
         contentValues.put(PopularMoviesContract.PopularMoviesEntry.VOTE_COUNT, dataHolder.voteCount);
         contentValues.put(PopularMoviesContract.PopularMoviesEntry.IS_MARKED_FAVORITE, false);
+        contentValues.put(PopularMoviesContract.PopularMoviesEntry.SORT_TYPE, dataHolder.sortType);
         // Insert the content values via a ContentResolver
         context.getContentResolver().insert(PopularMoviesContract.PopularMoviesEntry.CONTENT_URI, contentValues);
     }
@@ -78,8 +79,8 @@ public class PopularMoviesDBHelper extends SQLiteOpenHelper {
                 null);
 
         if (cursor.moveToFirst()) {
-            value = (cursor.getInt(cursor.getColumnIndex(PopularMoviesContract.PopularMoviesEntry.IS_MARKED_FAVORITE))) ;
-            if (value==1) {
+            value = (cursor.getInt(cursor.getColumnIndex(PopularMoviesContract.PopularMoviesEntry.IS_MARKED_FAVORITE)));
+            if (value == 1) {
                 //not marked
                 isMarked = true;
                 cursor.close();

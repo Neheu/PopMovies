@@ -1,21 +1,17 @@
-package movies.proj.com.popularmovies;
+package movies.proj.com.popularmovies.adapters;
 
 import android.content.Context;
-import android.support.constraint.solver.ArrayLinkedVariables;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 
+import movies.proj.com.popularmovies.R;
 import movies.proj.com.popularmovies.data.MovieTrailers;
-import movies.proj.com.popularmovies.utility.ConstantsUtility;
 
 /**
  * Created by Neha on 2/8/2017.
@@ -35,12 +31,15 @@ public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrai
         return new PopMoviesTrailedViewHolder(layoutView);
     }
 
-    public PopMoviesTrailersAdapter(final Context actContext, final ArrayList<MovieTrailers> trailerList, final onTrailerThumbClickHandler handler) {
+    public PopMoviesTrailersAdapter(final Context actContext, final onTrailerThumbClickHandler handler) {
         this.context = actContext;
-        this.resultDataList = trailerList;
         this.clickHandler = handler;
     }
 
+    public void setResultDataList(final ArrayList<MovieTrailers> trailerList) {
+        this.resultDataList = trailerList;
+        notifyDataSetChanged();
+    }
 
     public interface onTrailerThumbClickHandler {
         void onClick(MovieTrailers dataHoler);
@@ -59,7 +58,10 @@ public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrai
 
     @Override
     public int getItemCount() {
+        if(resultDataList!=null)
         return resultDataList.size();
+        else
+            return 0;
     }
 
     class PopMoviesTrailedViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

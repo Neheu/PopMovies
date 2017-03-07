@@ -1,5 +1,8 @@
 package movies.proj.com.popularmovies.utility;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.view.inputmethod.InputConnection;
 
@@ -23,7 +26,7 @@ public class NetworkUtils {
     private static final String apiParam = "api_key";
     private static final String popular = "popular";
     private static final String topRated = "top_rated";
-    private static final String video="videos";
+    private static final String video = "videos";
 
 
     /*
@@ -31,14 +34,8 @@ public class NetworkUtils {
     by using api key
     @return path (url) of movie server.
      */
-    public static URL buildUrl(boolean typePopular) {
-        String appendPath;
-        if (typePopular)
-
-            appendPath = ConstantsUtility.POPULAR_URL;
-        else
-            appendPath = ConstantsUtility.TOP_RATED_URL;
-
+    public static URL buildUrl(int type) {
+        String appendPath = ConstantsUtility.MOVIE_SORT_ENDPOINT[type];
         Uri uri = Uri.parse(ConstantsUtility.BASE_URL).buildUpon()
                 .appendEncodedPath(appendPath)
                 .appendQueryParameter(apiParam, ConstantsUtility.API_KEY)
@@ -51,6 +48,7 @@ public class NetworkUtils {
         }
         return movieUrl;
     }
+
     public static URL buildUrlTrailes(int id) {
         String appendPath = video;
 
@@ -88,6 +86,15 @@ public class NetworkUtils {
         } finally {
             httpConnection.disconnect();
         }
+    }
+
+    /* This method will provide the state about if any internet network is connected*/
+    public static boolean isConnectedToNetwork(Context context) {
+        ConnectivityManager
+                cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null
+                && activeNetwork.isConnectedOrConnecting();
     }
 
 }

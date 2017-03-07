@@ -26,7 +26,7 @@ public class PopularMovieJsonUtil {
     This method will help to parse data ,got from popular movies url and store that into PopualMovies object for further use.
     @param moviesJsonString, use to get the json string, recieved from server.
      */
-    public static ArrayList<PopularMovies> parseMoviesData(final Context context, final String moviesJsonString) {
+    public static ArrayList<PopularMovies> parseMoviesData(final Context context, final String moviesJsonString,final int sortType) {
 
 
         ArrayList<PopularMovies> listOfMovies = new ArrayList<>();
@@ -43,7 +43,7 @@ public class PopularMovieJsonUtil {
                         jsonObject.getString(ConstantsUtility.MOVIE_ORIGINAL_TITLE), jsonObject.getString(ConstantsUtility.MOVIE_ORIGINAL_LANGUAGE),
                         jsonObject.getString(ConstantsUtility.MOVIE_TITLE), jsonObject.getString(ConstantsUtility.MOVIE_BACKDROP_PATH),
                         jsonObject.getDouble(ConstantsUtility.MOVIE_POPULARITY), jsonObject.getInt(ConstantsUtility.MOVIE_VOTE_COUNT),
-                        jsonObject.getBoolean(ConstantsUtility.MOVIE_VIDEO), jsonObject.getDouble(ConstantsUtility.MOVIE_VOTE_AVERAGE));
+                        jsonObject.getBoolean(ConstantsUtility.MOVIE_VIDEO), jsonObject.getDouble(ConstantsUtility.MOVIE_VOTE_AVERAGE),sortType);
                 new PopularMoviesDBHelper(context).insetMoviesListToDb(dataHolder);
                 listOfMovies.add(dataHolder);
             }

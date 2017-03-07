@@ -1,4 +1,4 @@
-package movies.proj.com.popularmovies.activity;
+package movies.proj.com.popularmovies.activity.main;
 
 import android.content.Intent;
 import android.os.Bundle;

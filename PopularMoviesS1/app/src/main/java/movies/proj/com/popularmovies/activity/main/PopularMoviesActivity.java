@@ -1,8 +1,7 @@
-package movies.proj.com.popularmovies.activity;
+package movies.proj.com.popularmovies.activity.main;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.net.Uri;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -26,15 +25,15 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import movies.proj.com.popularmovies.PopularMoviesAdapter;
+import movies.proj.com.popularmovies.activity.movie_details.PopularMovieDetailActivity;
+import movies.proj.com.popularmovies.adapters.PopularMoviesAdapter;
 import movies.proj.com.popularmovies.R;
 import movies.proj.com.popularmovies.data.PopularMovies;
+import movies.proj.com.popularmovies.data.PopularMoviesContract;
 import movies.proj.com.popularmovies.utility.ConstantsUtility;
 import movies.proj.com.popularmovies.utility.NetworkUtils;
 import movies.proj.com.popularmovies.utility.PopularMovieJsonUtil;
 import movies.proj.com.popularmovies.utility.Utils;
-
-import static android.R.attr.id;
 
 public class PopularMoviesActivity extends AppCompatActivity implements PopularMoviesAdapter.onMovieThumbClickHandler,
         LoaderManager.LoaderCallbacks<ArrayList<PopularMovies>> {
@@ -46,7 +45,7 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
     RecyclerView mRecyclerView;
     @BindView(R.id.progress_bar)
     ProgressBar pBar;
-    private boolean isPopularMovie = true;
+    private int movieSortType = 1;
     private LoaderManager.LoaderCallbacks<ArrayList<PopularMovies>> callback = PopularMoviesActivity.this;
     private Bundle bundleForLoader = null;
 
@@ -60,8 +59,6 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
 
         // Initialize all the required resources by calling initResources()
         initResources();
-
-
     }
 
 
@@ -80,16 +77,19 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        isPopularMovie = true;
-                        // Collections.sort(listTobeSort, new MoviesSortComparatorUtils(true));
+                        movieSortType = ConstantsUtility.MOVIE_SORT_TYPE[0];
                         getSupportLoaderManager().restartLoader(MOVIES_LOADER_ID, bundleForLoader, callback);
                         break;
                     case 1:
-//                                Collections.sort(listTobeSort, new MoviesSortComparatorUtils(false));
-                        isPopularMovie = false;
+                        movieSortType = ConstantsUtility.MOVIE_SORT_TYPE[1];
                         getSupportLoaderManager().restartLoader(MOVIES_LOADER_ID, bundleForLoader, callback);
 
                         break;
+                    case 2:
+                        movieSortType = ConstantsUtility.MOVIE_SORT_TYPE[2];
+                        getFavoriteMoviesList();
+                        popularMoviesAdapter = new PopularMoviesAdapter(PopularMoviesActivity.this, listTobeSort, clickHandler);
+                        mRecyclerView.setAdapter(popularMoviesAdapter);
                 }
             }
 
@@ -124,8 +124,6 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
     private void initResources() {
         ButterKnife.bind(this);
         mRecyclerView.setHasFixedSize(true);
-
-
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, new Utils().numberOfColumsForGridView(this));
         mRecyclerView.setLayoutManager(gridLayoutManager);
         clickHandler = this;
@@ -137,12 +135,13 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
          * created and (if the activity/fragment is currently started) starts the loader. Otherwise
          * the last created loader is re-used.
          */
+
         getSupportLoaderManager().initLoader(MOVIES_LOADER_ID, bundleForLoader, callback);
     }
 
-    private String getDataFromServer(boolean type) {
+    private String getDataFromServer() {
         String dataString = null;
-        URL url = NetworkUtils.buildUrl(type);
+        URL url = NetworkUtils.buildUrl(movieSortType);
         try {
             dataString = NetworkUtils.getResponseFromHttUrl(url);
         } catch (IOException e) {
@@ -162,18 +161,13 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
     }
 
     private ArrayList<PopularMovies> getPopularMoviesJsonObjectFromString(String dataToParse) {
-        return PopularMovieJsonUtil.parseMoviesData(PopularMoviesActivity.this, dataToParse);
+        return PopularMovieJsonUtil.parseMoviesData(PopularMoviesActivity.this, dataToParse, movieSortType);
     }
 
     @Override
     public void onClick(PopularMovies dataHolder) {
         Intent intent = new Intent(PopularMoviesActivity.this, PopularMovieDetailActivity.class);
-//        intent.putExtra(ConstantsUtility.INTENT_TITLE, dataHolder.title);
-//        intent.putExtra(ConstantsUtility.INTENT_RELEASE_DATE, dataHolder.releaseDate);
-//        intent.putExtra(ConstantsUtility.INTENT_THUMB_URL, dataHolder.posterPath);
-//        intent.putExtra(ConstantsUtility.INTENT_RATING, dataHolder.voteAverage);
-//        intent.putExtra(ConstantsUtility.INTENT_OVERVIEW, dataHolder.overview);
-        intent.putExtra(ConstantsUtility.INTENT_MOVIE_DATA,dataHolder);
+        intent.putExtra(ConstantsUtility.INTENT_MOVIE_DATA, dataHolder);
         startActivity(intent);
 
     }
@@ -201,7 +195,7 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
 
             @Override
             public ArrayList<PopularMovies> loadInBackground() {
-                String resultString = getDataFromServer(isPopularMovie);
+                String resultString = getDataFromServer();
                 return getPopularMoviesJsonObjectFromString(resultString);
             }
 
@@ -231,6 +225,37 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
         setDataGridVisible();
     }
 
+    private ArrayList<PopularMovies> getFavoriteMoviesList() {
+        Cursor cursor = getContentResolver().query(PopularMoviesContract.PopularMoviesEntry.CONTENT_URI, null, PopularMoviesContract.PopularMoviesEntry.IS_MARKED_FAVORITE
+                + " =1", null, null);
+        ArrayList<PopularMovies> favList = new ArrayList<>();
+        if (cursor != null && cursor.moveToFirst())
+            do {
+                boolean adult = false, video = false;
+                if (cursor.getInt(cursor.getColumnIndexOrThrow(PopularMoviesContract.PopularMoviesEntry.IS_ADULT)) == 1)
+                    adult = true;
+
+                PopularMovies holder = new PopularMovies(cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.PopularMoviesEntry.POSTER_PATH)),
+                        adult,
+                        cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.PopularMoviesEntry.OVERVIEW)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.PopularMoviesEntry.RELEASE_DATE)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(PopularMoviesContract.PopularMoviesEntry.MOVIE_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.PopularMoviesEntry.ORIGINAL_TITLE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.PopularMoviesEntry.ORIGINAL_LANGUAGE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.PopularMoviesEntry.TITLE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.PopularMoviesEntry.BACKDROP_PATH)),
+                        cursor.getDouble(cursor.getColumnIndexOrThrow(PopularMoviesContract.PopularMoviesEntry.POPULARITY)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(PopularMoviesContract.PopularMoviesEntry.VOTE_COUNT)),
+                        false,
+                        cursor.getDouble(cursor.getColumnIndexOrThrow(PopularMoviesContract.PopularMoviesEntry.VOTE_AVERAGE)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(PopularMoviesContract.PopularMoviesEntry.SORT_TYPE)));
+                favList.add(holder);
+
+            }
+            while (cursor.moveToNext());
+
+        return favList;
+    }
 
 
 }

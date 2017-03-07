@@ -19,7 +19,7 @@ public class DatabaseUtils {
                     + PopularMoviesEntry.POSTER_PATH + " TEXT NOT NULL, "
                     + PopularMoviesEntry.BACKDROP_PATH + " TEXT NOT NULL, "
                     + PopularMoviesEntry.IS_ADULT + " BOOLEAN NOT NULL DEFAULT 1, "
-                    +PopularMoviesEntry.MOVIE_ID+" INTEGER NOT NULL, "
+                    + PopularMoviesEntry.MOVIE_ID + " INTEGER NOT NULL, "
                     + PopularMoviesEntry.ORIGINAL_LANGUAGE + " TEXT NOT NULL,"
                     + PopularMoviesEntry.ORIGINAL_TITLE + " TEXT NOT NULL, "
                     + PopularMoviesEntry.OVERVIEW + " TEXT NOT NULL, "
@@ -30,6 +30,7 @@ public class DatabaseUtils {
                     + PopularMoviesEntry.VOTE_COUNT + " INTEGER NOT NULL, "
                     + PopularMoviesEntry.HAS_VIDEO + " BOOLEAN NOT NULL DEFAULT 1,"
                     + PopularMoviesEntry.IS_MARKED_FAVORITE + " BOOLEAN NOT NULL DEFAULT 0,"
+                    + PopularMoviesEntry.SORT_TYPE + " INTEGER NOT NULL,"
                     + "UNIQUE (" + PopularMoviesEntry.MOVIE_ID + ") ON CONFLICT REPLACE"
 
                     + " )";

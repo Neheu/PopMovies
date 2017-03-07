@@ -1,4 +1,4 @@
-package movies.proj.com.popularmovies.activity;
+package movies.proj.com.popularmovies.activity.movie_details;
 
 import android.content.ContentValues;
 import android.content.Context;
