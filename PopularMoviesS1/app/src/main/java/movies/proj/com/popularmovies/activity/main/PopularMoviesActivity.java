@@ -87,7 +87,7 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
                         break;
                     case 2:
                         movieSortType = ConstantsUtility.MOVIE_SORT_TYPE[2];
-                        getFavoriteMoviesList();
+                        listTobeSort = getFavoriteMoviesList();
                         popularMoviesAdapter = new PopularMoviesAdapter(PopularMoviesActivity.this, listTobeSort, clickHandler);
                         mRecyclerView.setAdapter(popularMoviesAdapter);
                 }
