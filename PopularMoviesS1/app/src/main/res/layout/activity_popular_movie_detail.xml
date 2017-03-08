@@ -55,7 +55,9 @@
         app:layout_anchorGravity="bottom|right|end"
         android:onClick="markFavMovieClickHandler"/>
 
-    <android.support.v4.widget.NestedScrollView
+    <!--  I replaced this NestedSchrollView by a FrameLayout,
+     I moved the scroller inside the fragment that will be loaded here-->
+    <FrameLayout
         android:id="@+id/movie_detail_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
