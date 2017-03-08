@@ -161,7 +161,7 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.movie_detail_fragment, menu);
+        inflater.inflate(R.menu.menu_movie_detail, menu);
 //        MenuItem shareTrailerMenuItem = menu.findItem(R.id.share_trailer);
 //        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareTrailerMenuItem);
     }

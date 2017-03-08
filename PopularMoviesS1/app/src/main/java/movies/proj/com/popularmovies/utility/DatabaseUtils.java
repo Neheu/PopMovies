@@ -9,11 +9,13 @@ import movies.proj.com.popularmovies.data.PopularMoviesContract.PopularMoviesEnt
 public class DatabaseUtils {
     public static final String DATABASE_NAME = "moviesDB.db";
     public static final int DATABASE_VERSION = 1;
-    public static final String TABLE_NAME = "movies";
+    public static final String TABLE_MOVIES = "movies";
+    public static final String TABLE_FAV_MOVIES = "fav_movies";
+
 
     //Create table query for POPULAR MOVIES data
     public static final String CREATE_TABLE_MOVIES =
-            "CREATE TABLE " + TABLE_NAME
+            "CREATE TABLE " + TABLE_MOVIES
                     + " ("
                     + PopularMoviesEntry._ID + " INTEGER PRIMARY KEY, "
                     + PopularMoviesEntry.POSTER_PATH + " TEXT NOT NULL, "
@@ -29,13 +31,23 @@ public class DatabaseUtils {
                     + PopularMoviesEntry.VOTE_AVERAGE + " DOUBLE NOT NULL, "
                     + PopularMoviesEntry.VOTE_COUNT + " INTEGER NOT NULL, "
                     + PopularMoviesEntry.HAS_VIDEO + " BOOLEAN NOT NULL DEFAULT 1,"
-                    + PopularMoviesEntry.IS_MARKED_FAVORITE + " BOOLEAN NOT NULL DEFAULT 0,"
                     + PopularMoviesEntry.SORT_TYPE + " INTEGER NOT NULL,"
                     + "UNIQUE (" + PopularMoviesEntry.MOVIE_ID + ") ON CONFLICT REPLACE"
 
                     + " )";
+
+    //Create table to store favorite marked movies
+    public static final String CREATE_TABLE_FAVORITE_MOVIES =
+            "CREATE TABLE " + TABLE_FAV_MOVIES
+                    + " ("
+                    + PopularMoviesEntry._ID + " INTEGER PRIMARY KEY, "
+                    + PopularMoviesEntry.MOVIE_ID + " INTEGER NOT NULL "
+                    + " )";
+
+
     //Drop movie table query
-    public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+    public static final String DROP_TABLE_MOVIES = "DROP TABLE IF EXISTS " + TABLE_MOVIES;
+    public static final String DROP_TABLE_FAV_MOVIES = "DROP TABLE IF EXISTS " + TABLE_FAV_MOVIES;
 
 
 }

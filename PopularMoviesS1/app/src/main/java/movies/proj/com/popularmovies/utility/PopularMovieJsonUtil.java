@@ -44,7 +44,7 @@ public class PopularMovieJsonUtil {
                         jsonObject.getString(ConstantsUtility.MOVIE_TITLE), jsonObject.getString(ConstantsUtility.MOVIE_BACKDROP_PATH),
                         jsonObject.getDouble(ConstantsUtility.MOVIE_POPULARITY), jsonObject.getInt(ConstantsUtility.MOVIE_VOTE_COUNT),
                         jsonObject.getBoolean(ConstantsUtility.MOVIE_VIDEO), jsonObject.getDouble(ConstantsUtility.MOVIE_VOTE_AVERAGE),sortType);
-                new PopularMoviesDBHelper(context).insetMoviesListToDb(dataHolder);
+                new PopularMoviesDBHelper(context).insertMoviesListToDb(dataHolder);
                 listOfMovies.add(dataHolder);
             }
 
@@ -67,7 +67,7 @@ public class PopularMovieJsonUtil {
 
                 MovieTrailers dataHolder = new MovieTrailers(jsonObject.getString(ConstantsUtility.TRAILER_ID),
                         jsonObject.getString(ConstantsUtility.TRAILER_KEY));
-               // new PopularMoviesDBHelper(context).insetMoviesListToDb(dataHolder);
+               // new PopularMoviesDBHelper(context).insertMoviesListToDb(dataHolder);
                 listOfMovies.add(dataHolder);
             }
 

@@ -8,14 +8,8 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.provider.UserDictionary;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
-import movies.proj.com.popularmovies.utility.DatabaseUtils;
-
-import static movies.proj.com.popularmovies.utility.DatabaseUtils.TABLE_NAME;
 
 /**
  * Created by ${Neha} on 2/23/2017.
@@ -24,7 +18,7 @@ import static movies.proj.com.popularmovies.utility.DatabaseUtils.TABLE_NAME;
 public class PopularMoviesContantProvider extends ContentProvider {
     private PopularMoviesDBHelper moviesDBHelper;
     public static final int MOVIES = 100;
-    public static final int MOVIES_WITH_ID = 101;
+    private static String TABLE_NAME;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     @Override
@@ -49,7 +43,7 @@ public class PopularMoviesContantProvider extends ContentProvider {
           The two calls below add matches for the task directory and a single item by ID.
          */
         uriMatcher.addURI(PopularMoviesContract.AUTHORITY, PopularMoviesContract.PATH_MOVIES, MOVIES);
-        uriMatcher.addURI(PopularMoviesContract.AUTHORITY, PopularMoviesContract.PATH_MOVIES + "/#", MOVIES_WITH_ID);
+//        uriMatcher.addURI(PopularMoviesContract.AUTHORITY, PopularMoviesContract.PATH_MOVIES + "/#", MOVIES_WITH_ID);
 
         return uriMatcher;
     }
@@ -124,7 +118,22 @@ public class PopularMoviesContantProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        final SQLiteDatabase db = moviesDBHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+        int rowsUpdated = 0;
+
+        switch (match) {
+            case MOVIES:
+                rowsUpdated = db.delete(TABLE_NAME, selection,
+                        selectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        if (rowsUpdated != 0 && getContext() != null) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsUpdated;
     }
 
     @Override
@@ -151,4 +160,9 @@ public class PopularMoviesContantProvider extends ContentProvider {
         return rowsUpdated;
 
     }
+    public static void tableToProcess(String table)
+    {
+        TABLE_NAME =  table;
+    }
+
 }
