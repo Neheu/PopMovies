@@ -52,7 +52,7 @@ public class PopularMovieDetailActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         context = PopularMovieDetailActivity.this;
         data = getIntent().getExtras().getParcelable(ConstantsUtility.INTENT_MOVIE_DATA);
-
+        /* Check and update if selected movie is marked*/
         updateFavoriteStar(checkIfMarkedAsFavorite());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.TRANSPARENT);

@@ -124,8 +124,14 @@ public class TrailersTabFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onLoadFinished(Loader<ArrayList<MovieTrailers>> loader, ArrayList<MovieTrailers> data) {
         trailersList = data;
-        adapter.setResultDataList(trailersList);
-        adapter.notifyDataSetChanged();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.setResultDataList(trailersList);
+                rv_trailer.setAdapter(adapter);
+                adapter.notifyDataSetChanged();            }
+        });
+
 
     }
 

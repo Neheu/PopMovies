@@ -9,6 +9,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,9 +22,12 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import movies.proj.com.popularmovies.R;
+import movies.proj.com.popularmovies.data.MovieTrailers;
 import movies.proj.com.popularmovies.data.PopularMovies;
 import movies.proj.com.popularmovies.utility.ConstantsUtility;
 
@@ -30,17 +35,11 @@ import movies.proj.com.popularmovies.utility.ConstantsUtility;
  * Created by Neha on 01-03-2017.
  */
 
-public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSelectedListener {
+public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSelectedListener , LoaderManager.LoaderCallbacks<ArrayList<MovieTrailers>>{
     @SuppressWarnings("unused")
     public static final String TAG = FragmentMovieDetail.class.getSimpleName();
-    /**
-     * The fragment argument representing the movie that this fragment
-     * represents.
-     */
-    public static final String EXTRA_TRAILERS = "EXTRA_TRAILERS";
-    public static final String EXTRA_REVIEWS = "EXTRA_REVIEWS";
-
     private PopularMovies mMovie;
+
     @BindView(R.id.movie_overview)
     TextView mMovieOverviewView;
     @BindView(R.id.movie_release_date)
@@ -65,6 +64,7 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /* Get data from intents set by parent activity*/
         if (getArguments().containsKey(ConstantsUtility.INTENT_MOVIE_DATA)) {
             mMovie = getArguments().getParcelable(ConstantsUtility.INTENT_MOVIE_DATA);
         }
@@ -100,70 +100,41 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
         mMovieOverviewView.setText(mMovie.overview);
         mMovieReleaseDateView.setText(mMovie.releaseDate);
         int rating = (mMovie.voteCount * 5) / 100;
-        userRating.setText("Rating- " + String.valueOf(rating));
-        mMovieVote.setText(getString(R.string.tmdb_rating) + "- " + String.valueOf(mMovie.voteAverage) + "/10");
+        userRating.setText("Vote - " + String.valueOf(rating));
+        mMovieVote.setText(getString(R.string.rating) + "- " + String.valueOf(mMovie.voteAverage) + "/10");
 
         Picasso.with(getActivity())
                 .load(ConstantsUtility.POSTER_IMAGE_BASE + mMovie.posterPath)
                 .config(Bitmap.Config.RGB_565)
                 .into(mMoviePosterView);
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.watch_trailer)));
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.trailers)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.reviews)));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         viewPager.setAdapter(new TrailerReviewsAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount()));
         //Adding onTabSelectedListener to swipe views
         tabLayout.setOnTabSelectedListener(this);
-//        // For horizontal list of trailers
-//        LinearLayoutManager layoutManager
-//                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-//        mRecyclerViewForTrailers.setLayoutManager(layoutManager);
-////        mTrailerListAdapter = new TrailerListAdapter(new ArrayList<Trailer>(), this);
-////        mRecyclerViewForTrailers.setAdapter(mTrailerListAdapter);
-//        mRecyclerViewForTrailers.setNestedScrollingEnabled(false);
-
-        // For vertical list of reviews
-//        mReviewListAdapter = new ReviewListAdapter(new ArrayList<Review>(), this);
-//        mRecyclerViewForReviews.setAdapter(mReviewListAdapter);
-
-        // Fetch trailers only if savedInstanceState == null
-//        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_TRAILERS)) {
-//            List<Trailer> trailers = savedInstanceState.getParcelableArrayList(EXTRA_TRAILERS);
-//            mTrailerListAdapter.add(trailers);
-//            mButtonWatchTrailer.setEnabled(true);
-//        } else {
-//            fetchTrailers();
-//        }
-
-//        // Fetch reviews only if savedInstanceState == null
-//        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_REVIEWS)) {
-//            List<Review> reviews = savedInstanceState.getParcelableArrayList(EXTRA_REVIEWS);
-//            mReviewListAdapter.add(reviews);
-//        } else {
-//            fetchReviews();
-//        }
-
         return rootView;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        ArrayList<Trailer> trailers = mTrailerListAdapter.getTrailers();
-//        if (trailers != null && !trailers.isEmpty()) {
-//            outState.putParcelableArrayList(EXTRA_TRAILERS, trailers);
-//        }
-//
-//        ArrayList<Review> reviews = mReviewListAdapter.getReviews();
-//        if (reviews != null && !reviews.isEmpty()) {
-//            outState.putParcelableArrayList(EXTRA_REVIEWS, reviews);
-//        }
+        /*
+        ArrayList<Trailer> trailers = mTrailerListAdapter.getTrailers();
+        if (trailers != null && !trailers.isEmpty()) {
+        outState.putParcelableArrayList(EXTRA_TRAILERS, trailers);
+        }
+
+        ArrayList<Review> reviews = mReviewListAdapter.getReviews();
+        if (reviews != null && !reviews.isEmpty()) {
+        outState.putParcelableArrayList(EXTRA_REVIEWS, reviews);
+        }
+        */
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_movie_detail, menu);
-//        MenuItem shareTrailerMenuItem = menu.findItem(R.id.share_trailer);
-//        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareTrailerMenuItem);
     }
 
     @Override
@@ -179,6 +150,21 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public Loader<ArrayList<MovieTrailers>> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<ArrayList<MovieTrailers>> loader, ArrayList<MovieTrailers> data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<ArrayList<MovieTrailers>> loader) {
 
     }
 

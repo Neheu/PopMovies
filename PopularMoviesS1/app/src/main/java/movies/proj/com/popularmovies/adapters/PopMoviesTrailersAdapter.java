@@ -18,7 +18,7 @@ import movies.proj.com.popularmovies.data.MovieTrailers;
  */
 public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrailersAdapter.PopMoviesTrailedViewHolder> {
     private onTrailerThumbClickHandler clickHandler;
-    private ArrayList<MovieTrailers> resultDataList;
+    private ArrayList<MovieTrailers> resultDataList = new ArrayList<>();
     private Context context;
 
     @Override
@@ -58,11 +58,8 @@ public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrai
 
     @Override
     public int getItemCount() {
-        if(resultDataList!=null)
-        return resultDataList.size();
-        else
-            return 0;
-    }
+        return 3;
+           }
 
     class PopMoviesTrailedViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView trailerThumb;
