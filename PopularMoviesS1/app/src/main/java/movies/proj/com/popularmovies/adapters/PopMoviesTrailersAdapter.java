@@ -50,7 +50,13 @@ public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrai
         if (resultDataList.size() != 0) {
 //            String imgUrl = ConstantsUtility.POSTER_IMAGE_BASE + resultDataList.get(position).posterPath;
 //            Picasso.with(context).load(imgUrl).into(holder.trailerThumb);
-            holder.trailerText.setText(position + 1);
+            //TODO: Avoid setting integer as Text, instead of setting as text,
+            //TODO: Dalvik Machine will try to find a ressource corresponding to that integer
+            //TODO: and as it does not exist, it will fail
+            //TODO: holder.trailerText.setText(position + 1);
+
+            //Do a concatenation with empty String instead
+            holder.trailerText.setText(""+(position + 1));
 
         }
     }

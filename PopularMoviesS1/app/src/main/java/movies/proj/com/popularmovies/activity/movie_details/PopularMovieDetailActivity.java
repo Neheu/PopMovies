@@ -43,6 +43,9 @@ public class PopularMovieDetailActivity extends AppCompatActivity {
     private PopularMovies data;
     private String trailerToShare = "";
 
+    final static String FRAGMENT_DETAILS_TAG = "details_fragment";
+    FragmentMovieDetail fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,10 +70,25 @@ public class PopularMovieDetailActivity extends AppCompatActivity {
             Bundle arguments = new Bundle();
             arguments.putParcelable(ConstantsUtility.INTENT_MOVIE_DATA,
                     getIntent().getParcelableExtra(ConstantsUtility.INTENT_MOVIE_DATA));
-            FragmentMovieDetail fragment = new FragmentMovieDetail();
+
+            //The fragment has been declared as global variable
+            fragment = new FragmentMovieDetail();
             fragment.setArguments(arguments);
 
-            getSupportFragmentManager().beginTransaction().add(R.id.movie_detail_container, fragment).commit();
+            /*
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.movie_detail_container, fragment).commit();*/
+            //TODO : i prefer to use replace() instead of add()
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(
+                            R.id.movie_detail_container,
+                            fragment,
+                            //TODO : this tag is very helpfull,
+                            // you may use it anytime to retriev your fragment in the supportFragmentManager
+                            FRAGMENT_DETAILS_TAG)
+                    .commit();
         }
     }
 
@@ -141,4 +159,37 @@ public class PopularMovieDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //This methos handle every click to back button
+    @Override
+    public void onBackPressed() {
+        //FragmentMovieDetail detail = getSupportFragmentManager().findFragmentByTag();
+        if(fragment != null){
+            //If the viewPager is visible, this means we have to hide it
+            // and not leave the DetailsActivity
+            if(fragment.viewPager.getVisibility() == View.VISIBLE){
+
+                //hide the viewPager / the main details will be visible again
+                fragment.viewPager.setVisibility(View.GONE);
+
+                //return to cancel back effect
+                return;
+            }
+        } else {
+            fragment = (FragmentMovieDetail) getSupportFragmentManager().findFragmentByTag(FRAGMENT_DETAILS_TAG);
+
+            //TODO : the following is the same code from the "if" statement
+            //If the viewPager is visible, this means we have to hide it
+            // and not leave the DetailsActivity
+            if(fragment.viewPager.getVisibility() == View.VISIBLE){
+
+                //hide the viewPager / the main details will be visible again
+                fragment.viewPager.setVisibility(View.GONE);
+
+                //return to cancel back effect
+                return;
+            }
+        }
+
+        super.onBackPressed();
+    }
 }

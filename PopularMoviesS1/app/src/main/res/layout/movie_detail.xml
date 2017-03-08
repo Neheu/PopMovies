@@ -1,102 +1,126 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<!-- It's always better to add the Scroller right here, at the root of your fragment-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <!-- Notice the above property, it's very usefull here
+    it allows you to always keep you TabLayout visible-->
+    <android.support.v4.widget.NestedScrollView
+        android:layout_above="@+id/tabLayout"
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        tools:context=".details.MovieDetailFragment">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/movie_poster"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginRight="8dp"
-            android:scaleType="fitXY" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="@dimen/activity_vertical_margin">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                tools:context=".details.MovieDetailFragment">
+
+                <ImageView
+                    android:id="@+id/movie_poster"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="8dp"
+                    android:scaleType="fitXY" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/movie_user_vote"
+                        style="?android:attr/textAppearanceMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        android:textColor="@color/colorAccent"
+                        android:textIsSelectable="true" />
+
+                    <TextView
+                        android:id="@+id/movie_release_date"
+                        style="?android:attr/textAppearanceMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        android:textColor="@color/colorAccent"
+                        android:textIsSelectable="true" />
+                    <!--<RatingBar-->
+                    <!--android:id="@+id/movie_user_ratingbar"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_centerHorizontal="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:numStars="5"-->
+                    <!--android:theme="@style/CustomRatingBar" />-->
+
+                    <TextView
+                        android:id="@+id/tv_rating"
+                        style="?android:attr/textAppearanceMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        android:textColor="@color/colorAccent"
+                        android:textIsSelectable="true" />
+
+                </LinearLayout>
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/movie_user_vote"
+                android:id="@+id/movie_overview"
                 style="?android:attr/textAppearanceMedium"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
                 android:textColor="@color/colorAccent"
-                android:textIsSelectable="true" />
+                android:textIsSelectable="true"
+                android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/movie_release_date"
-                style="?android:attr/textAppearanceMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/activity_vertical_margin"
-                android:textColor="@color/colorAccent"
-                android:textIsSelectable="true" />
-            <!--<RatingBar-->
-            <!--android:id="@+id/movie_user_ratingbar"-->
-            <!--android:layout_width="wrap_content"-->
+
+            <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/review_list"-->
+            <!--android:layout_width="match_parent"-->
             <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:numStars="5"-->
-            <!--android:theme="@style/CustomRatingBar" />-->
-
-            <TextView
-                android:id="@+id/tv_rating"
-                style="?android:attr/textAppearanceMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/activity_vertical_margin"
-                android:textColor="@color/colorAccent"
-                android:textIsSelectable="true" />
+            <!--app:layoutManager="LinearLayoutManager"-->
+            <!--tools:listitem="@layout/moivie_review_list_item" />-->
 
         </LinearLayout>
-    </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 
-    <TextView
-        android:id="@+id/movie_overview"
-        style="?android:attr/textAppearanceMedium"
+
+    <!-- View pager to swipe views -->
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:textColor="@color/colorAccent"
-        android:textIsSelectable="true"
-        android:textSize="16sp" />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tabLayout"
+        android:visibility="gone"/>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
+        android:layout_alignParentBottom="true"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <!-- View pager to swipe views -->
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent" />
-
-    <!--<android.support.v7.widget.RecyclerView-->
-    <!--android:id="@+id/review_list"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--app:layoutManager="LinearLayoutManager"-->
-    <!--tools:listitem="@layout/moivie_review_list_item" />-->
-
-</LinearLayout>
+</RelativeLayout>
