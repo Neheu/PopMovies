@@ -35,7 +35,7 @@ import movies.proj.com.popularmovies.utility.ConstantsUtility;
  * Created by Neha on 01-03-2017.
  */
 
-public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSelectedListener , LoaderManager.LoaderCallbacks<ArrayList<MovieTrailers>>{
+public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSelectedListener {
     @SuppressWarnings("unused")
     public static final String TAG = FragmentMovieDetail.class.getSimpleName();
     private PopularMovies mMovie;
@@ -153,20 +153,6 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
 
     }
 
-    @Override
-    public Loader<ArrayList<MovieTrailers>> onCreateLoader(int id, Bundle args) {
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<ArrayList<MovieTrailers>> loader, ArrayList<MovieTrailers> data) {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<ArrayList<MovieTrailers>> loader) {
-
-    }
 
     private class TrailerReviewsAdapter extends FragmentStatePagerAdapter {
         int tabCount;

@@ -38,7 +38,6 @@ public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrai
 
     public void setResultDataList(final ArrayList<MovieTrailers> trailerList) {
         this.resultDataList = trailerList;
-        notifyDataSetChanged();
     }
 
     public interface onTrailerThumbClickHandler {
@@ -58,7 +57,7 @@ public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrai
 
     @Override
     public int getItemCount() {
-        return 3;
+        return resultDataList.size();
            }
 
     class PopMoviesTrailedViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
