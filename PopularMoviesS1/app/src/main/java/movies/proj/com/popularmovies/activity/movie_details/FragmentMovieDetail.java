@@ -11,6 +11,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -57,6 +59,7 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
     ViewPager viewPager;
     @BindView(R.id.tv_rating)
     TextView userRating;
+    private TrailerReviewsAdapter mPagerAdapter;
 
     public FragmentMovieDetail() {
     }
@@ -110,9 +113,25 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.trailers)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.reviews)));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        viewPager.setAdapter(new TrailerReviewsAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount()));
+
+        //TODO : replaced "getActivity().getSupportFragmentManager()" by "getChildFragmentManager()"
+        //TODO: this attaches the viewPager fragments with this fragment's lifecycle & not the activity's one
+
+        //TODO : tabLayout.getTabCount(), i replaced it with TAB_COUNT
+        final int TAB_COUNT = 2;
+
+        mPagerAdapter = new TrailerReviewsAdapter( getChildFragmentManager(),TAB_COUNT);
+
+        //TODO : add successively yout Titles
+        mPagerAdapter.titlesArray.add(getString(R.string.trailers));
+        mPagerAdapter.titlesArray.add(getString(R.string.reviews));
+        viewPager.setAdapter( mPagerAdapter);
+
+        //Sync tab with viewPager
+        tabLayout.setupWithViewPager(viewPager);
+
         //Adding onTabSelectedListener to swipe views
-        tabLayout.setOnTabSelectedListener(this);
+        tabLayout.addOnTabSelectedListener(this);
         return rootView;
     }
 
@@ -139,8 +158,15 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        viewPager.setCurrentItem(tab.getPosition());
+        //TODO : viewPager.setCurrentItem(tab.getPosition());
+        //TODO : no need to deal with this manually, TabLayout has a better way to do this
+        //TODO :
 
+        //Okay, here, we set the viewPager visible
+        // And we hide everytime the user presses the device's backButton
+        if(viewPager.getVisibility() == View.GONE){
+            viewPager.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -150,16 +176,24 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
-
+        if(viewPager.getVisibility() == View.GONE){
+            viewPager.setVisibility(View.VISIBLE);
+        }
     }
 
 
     private class TrailerReviewsAdapter extends FragmentStatePagerAdapter {
         int tabCount;
 
+        //TODO: an array that will handle titles to be shown on the TabLayout
+        public ArrayList<String> titlesArray;
+
         public TrailerReviewsAdapter(FragmentManager fm, int tabCount) {
             super(fm);
             this.tabCount = tabCount;
+
+            //TODO: an array that will handle titles to be shown on the TabLayout
+            titlesArray = new ArrayList<>();
         }
 
         @Override
@@ -174,6 +208,13 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
                 default:
                     return null;
             }
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+
+            //Do your best to not have this array empty or an OutOfIndexException will be thrown
+            return titlesArray.get(position);
         }
 
         @Override
