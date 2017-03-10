@@ -79,7 +79,7 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
     }
 
     public interface onMovieThumbClickHandler {
-        void onClick(PopularMovies dataHoler);
+        void onClick(PopularMovies dataHolder);
 
     }
 

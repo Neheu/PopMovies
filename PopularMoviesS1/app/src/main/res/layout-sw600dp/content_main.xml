@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.main.PopularMoviesActivity"
     tools:showIn="@layout/activity_main">
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -25,12 +29,12 @@
         android:visibility="gone" />
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/layout_no_movie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
 
         <ImageView
@@ -49,4 +53,4 @@
             android:textSize="28sp" />
     </LinearLayout>
 
-</FrameLayout>
+</RelativeLayout>

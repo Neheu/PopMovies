@@ -9,8 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,7 +17,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -27,7 +25,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import movies.proj.com.popularmovies.R;
-import movies.proj.com.popularmovies.data.MovieTrailers;
 import movies.proj.com.popularmovies.data.PopularMovies;
 import movies.proj.com.popularmovies.utility.ConstantsUtility;
 
@@ -35,40 +32,29 @@ import movies.proj.com.popularmovies.utility.ConstantsUtility;
  * Created by Neha on 01-03-2017.
  */
 
-public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSelectedListener {
+public class PopularMovieDetailFragment extends Fragment implements TabLayout.OnTabSelectedListener {
     @SuppressWarnings("unused")
-    public static final String TAG = FragmentMovieDetail.class.getSimpleName();
+    public static final String TAG = PopularMovieDetailFragment.class.getSimpleName();
     private PopularMovies mMovie;
 
-    @BindView(R.id.movie_overview)
-    TextView mMovieOverviewView;
-    @BindView(R.id.movie_release_date)
-    TextView mMovieReleaseDateView;
-    @BindView(R.id.movie_poster)
-    ImageView mMoviePosterView;
-    @BindView(R.id.movie_user_vote)
-    TextView mMovieVote;
-
-    //    @BindView(R.id.tv_rating)
-//    RatingBar mUserRating;
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
     @BindView(R.id.pager)
     ViewPager viewPager;
-    @BindView(R.id.tv_rating)
-    TextView userRating;
 
-    public FragmentMovieDetail() {
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /* Get data from intents set by parent activity*/
-        if (getArguments().containsKey(ConstantsUtility.INTENT_MOVIE_DATA)) {
-            mMovie = getArguments().getParcelable(ConstantsUtility.INTENT_MOVIE_DATA);
-        }
-        ConstantsUtility.SELECTED_MOVIE_ID = mMovie.id;
+        //if (savedInstanceState == null) {
+            Bundle arguments = getArguments();
+            if (arguments != null && arguments.containsKey(ConstantsUtility.INTENT_MOVIE_DATA)) {
+                mMovie = arguments.getParcelable(ConstantsUtility.INTENT_MOVIE_DATA);
+                ConstantsUtility.SELECTED_MOVIE_DETAIL_DATA = mMovie;
+            }
+        //}
+
     }
 
     @Override
@@ -89,7 +75,20 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
                     .config(Bitmap.Config.RGB_565)
                     .into(movieBackdrop);
         }
+        if (savedInstanceState == null) {
+
+            Bundle arguments = new Bundle();
+            arguments.putInt(ConstantsUtility.MOVIE_ID,
+                    mMovie.id);
+            Fragment fragment = new Fragment();
+            fragment.setArguments(arguments);
+            getChildFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.pager, fragment)
+                    .commit();
+        }
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,22 +96,29 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
         View rootView = inflater.inflate(R.layout.movie_detail, container, false);
         ButterKnife.bind(this, rootView);
 
-        mMovieOverviewView.setText(mMovie.overview);
-        mMovieReleaseDateView.setText(mMovie.releaseDate);
-        int rating = (mMovie.voteCount * 5) / 100;
-        userRating.setText("Vote - " + String.valueOf(rating));
-        mMovieVote.setText(getString(R.string.rating) + "- " + String.valueOf(mMovie.voteAverage) + "/10");
+        // mMovieOverviewView.setText(mMovie.overview);
+        //mMovieReleaseDateView.setText(mMovie.releaseDate);
+//        int rating = (mMovie.voteCount * 5) / 100;
+//        userRating.setText("Vote - " + String.valueOf(rating));
+//        mMovieVote.setText(getString(R.string.rating) + "- " + String.valueOf(mMovie.voteAverage) + "/10");
+//
+//        Picasso.with(getActivity())
+//                .load(ConstantsUtility.POSTER_IMAGE_BASE + mMovie.posterPath)
+//                .config(Bitmap.Config.RGB_565)
+//                .into(mMoviePosterView);
 
-        Picasso.with(getActivity())
-                .load(ConstantsUtility.POSTER_IMAGE_BASE + mMovie.posterPath)
-                .config(Bitmap.Config.RGB_565)
-                .into(mMoviePosterView);
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.trailers)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.reviews)));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        viewPager.setAdapter(new TrailerReviewsAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount()));
-        //Adding onTabSelectedListener to swipe views
-        tabLayout.setOnTabSelectedListener(this);
+
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.addOnTabSelectedListener(this);
+        TrailerReviewsAdapter mPagerAdapter = new TrailerReviewsAdapter(getChildFragmentManager());
+        mPagerAdapter.titlesList.add(getString(R.string.movie_detail));
+        mPagerAdapter.titlesList.add(getString(R.string.trailers));
+        mPagerAdapter.titlesList.add(getString(R.string.reviews));
+        viewPager.setOffscreenPageLimit(3);
+
+        viewPager.setAdapter(mPagerAdapter);
+
+
         return rootView;
     }
 
@@ -139,7 +145,23 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
+        Fragment fragment = null;
+        switch (tab.getPosition()) {
+            case 0:
+                fragment = new DetailTabFrgment();
+                break;
+            case 1:
+                fragment = new TrailersTabFragment();
+                break;
+            case 2:
+                fragment = new DetailTabFrgment();
+                break;
+        }
         viewPager.setCurrentItem(tab.getPosition());
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.pager, fragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.commit();
 
     }
 
@@ -155,30 +177,38 @@ public class FragmentMovieDetail extends Fragment implements TabLayout.OnTabSele
 
 
     private class TrailerReviewsAdapter extends FragmentStatePagerAdapter {
-        int tabCount;
+        ArrayList<String> titlesList;
 
-        public TrailerReviewsAdapter(FragmentManager fm, int tabCount) {
+        public TrailerReviewsAdapter(FragmentManager fm) {
             super(fm);
-            this.tabCount = tabCount;
+            titlesList = new ArrayList<>();
         }
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    TrailersTabFragment tab1 = new TrailersTabFragment();
-                    return tab1;
+                    DetailTabFrgment movieDetail = new DetailTabFrgment();
+                    return movieDetail;
                 case 1:
-                    TrailersTabFragment tab2 = new TrailersTabFragment();
-                    return tab2;
+                    TrailersTabFragment trailersTabFragment = new TrailersTabFragment();
+                    return trailersTabFragment;
+                case 2:
+                    ReviewsTabFragment reviewsTabFragment = new ReviewsTabFragment();
+                    return reviewsTabFragment;
                 default:
                     return null;
             }
         }
 
         @Override
+        public CharSequence getPageTitle(int position) {
+            return titlesList.get(position);
+        }
+
+        @Override
         public int getCount() {
-            return tabCount;
+            return titlesList.size();
         }
     }
 

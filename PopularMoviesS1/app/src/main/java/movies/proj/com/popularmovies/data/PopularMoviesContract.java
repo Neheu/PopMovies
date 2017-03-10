@@ -39,9 +39,14 @@ public class PopularMoviesContract {
         public static final String VOTE_COUNT = "vote_count";
         public static final String HAS_VIDEO = "has_video";
         public static final String VOTE_AVERAGE = "vote_average";
-//        public static final String IS_MARKED_FAVORITE = "is_favorite";
-        public static final String SORT_TYPE ="sort_type";
+        //        public static final String IS_MARKED_FAVORITE = "is_favorite";
+        public static final String SORT_TYPE = "sort_type";
+        public static final String TRAILER_ID = "trailer_id";
+        public static final String TRAILER_KEY = "trailer_key";
 
-
+        public static final String REVIEW_ID = "id";
+        public static final String REVIEW_AUTHOR = "author";
+        public static final String REVIEW_CONTENT = "content";
+        public static final String REVIEW_URL = "url";
     }
 }

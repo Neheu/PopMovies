@@ -6,20 +6,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import movies.proj.com.popularmovies.R;
 import movies.proj.com.popularmovies.data.MovieTrailers;
+import movies.proj.com.popularmovies.utility.ConstantsUtility;
 
 /**
  * Created by Neha on 2/8/2017.
  */
-public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrailersAdapter.PopMoviesTrailedViewHolder> {
+public class PopularMoviesTrailersAdapter extends RecyclerView.Adapter<PopularMoviesTrailersAdapter.PopMoviesTrailedViewHolder> {
     private onTrailerThumbClickHandler clickHandler;
     private ArrayList<MovieTrailers> resultDataList = new ArrayList<>();
     private Context context;
+    private String pathPoster;
 
     @Override
     public PopMoviesTrailedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,13 +34,20 @@ public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrai
         return new PopMoviesTrailedViewHolder(layoutView);
     }
 
-    public PopMoviesTrailersAdapter(final Context actContext, final onTrailerThumbClickHandler handler) {
+    public PopularMoviesTrailersAdapter(final Context actContext, final onTrailerThumbClickHandler handler) {
         this.context = actContext;
         this.clickHandler = handler;
     }
 
     public void setResultDataList(final ArrayList<MovieTrailers> trailerList) {
         this.resultDataList = trailerList;
+        this.pathPoster = ConstantsUtility.SELECTED_MOVIE_DETAIL_DATA.posterPath;
+
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
     }
 
     public interface onTrailerThumbClickHandler {
@@ -48,9 +58,8 @@ public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrai
     @Override
     public void onBindViewHolder(PopMoviesTrailedViewHolder holder, int position) {
         if (resultDataList.size() != 0) {
-//            String imgUrl = ConstantsUtility.POSTER_IMAGE_BASE + resultDataList.get(position).posterPath;
-//            Picasso.with(context).load(imgUrl).into(holder.trailerThumb);
-            holder.trailerText.setText(position + 1);
+            String imgUrl = ConstantsUtility.POSTER_IMAGE_BASE + pathPoster;
+            Picasso.with(context).load(imgUrl).into(holder.trailerThumb);
 
         }
     }
@@ -58,16 +67,15 @@ public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrai
     @Override
     public int getItemCount() {
         return resultDataList.size();
-           }
+    }
 
     class PopMoviesTrailedViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView trailerThumb;
-        TextView trailerText;
 
         public PopMoviesTrailedViewHolder(View itemView) {
             super(itemView);
-            //trailerThumb = (ImageView) itemView.findViewById(R.id.trailer_thumbnail);
-            trailerText = (TextView) itemView.findViewById(R.id.tv_trailer);
+            trailerThumb = (ImageView) itemView.findViewById(R.id.trailer_thumbnail);
+            itemView.setOnClickListener(this);
 
         }
 
@@ -77,4 +85,5 @@ public class PopMoviesTrailersAdapter extends RecyclerView.Adapter<PopMoviesTrai
             clickHandler.onClick(moviesDataHolder);
         }
     }
+
 }

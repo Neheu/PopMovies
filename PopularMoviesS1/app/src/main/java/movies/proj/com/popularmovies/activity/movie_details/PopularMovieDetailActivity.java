@@ -1,5 +1,6 @@
 package movies.proj.com.popularmovies.activity.movie_details;
 
+import android.app.Fragment;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +31,7 @@ import movies.proj.com.popularmovies.utility.ConstantsUtility;
 
 import static movies.proj.com.popularmovies.utility.DatabaseUtils.TABLE_FAV_MOVIES;
 
-public class PopularMovieDetailActivity extends AppCompatActivity {
+public class PopularMovieDetailActivity extends AppCompatActivity implements TrailersTabFragment.onShareTrailerListener {
 
 
     @BindView(R.id.mark_fav)
@@ -41,6 +42,8 @@ public class PopularMovieDetailActivity extends AppCompatActivity {
     Toolbar mToolbar;
     private Context context;
     private PopularMovies data;
+    private PopularMovieDetailFragment fragment;
+    private static String FRAGMENT_DETAILS_TAG = "fragment_detail";
     private String trailerToShare = "";
 
     @Override
@@ -51,9 +54,7 @@ public class PopularMovieDetailActivity extends AppCompatActivity {
 
         setSupportActionBar(mToolbar);
         context = PopularMovieDetailActivity.this;
-        data = getIntent().getExtras().getParcelable(ConstantsUtility.INTENT_MOVIE_DATA);
-        /* Check and update if selected movie is marked*/
-        updateFavoriteStar(checkIfMarkedAsFavorite());
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
@@ -64,15 +65,34 @@ public class PopularMovieDetailActivity extends AppCompatActivity {
         }
 
         if (savedInstanceState == null) {
+
+
+            data = getIntent().getExtras().getParcelable(ConstantsUtility.INTENT_MOVIE_DATA);
+
             Bundle arguments = new Bundle();
             arguments.putParcelable(ConstantsUtility.INTENT_MOVIE_DATA,
                     getIntent().getParcelableExtra(ConstantsUtility.INTENT_MOVIE_DATA));
-            FragmentMovieDetail fragment = new FragmentMovieDetail();
+            fragment = new PopularMovieDetailFragment();
             fragment.setArguments(arguments);
 
-            getSupportFragmentManager().beginTransaction().add(R.id.movie_detail_container, fragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.movie_detail_container, fragment, FRAGMENT_DETAILS_TAG).commit();
+        } else {
+            data = getIntent().getExtras().getParcelable(ConstantsUtility.INTENT_MOVIE_DATA);
+            isMarkedFav = savedInstanceState.getBoolean(ConstantsUtility.IS_FAVORITE);
         }
+
+ /* Check and update if selected movie is marked*/
+        updateFavoriteStar(checkIfMarkedAsFavorite());
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(ConstantsUtility.INTENT_MOVIE_DATA, data);
+        outState.putBoolean(ConstantsUtility.IS_FAVORITE, isMarkedFav);
+    }
+
+    private boolean isMarkedFav;
 
     public void markFavMovieClickHandler(View view) {
         /* Check if movie is malready marked as favorite*/
@@ -84,14 +104,16 @@ public class PopularMovieDetailActivity extends AppCompatActivity {
             context.getContentResolver().delete(PopularMoviesContract.PopularMoviesEntry.CONTENT_URI, PopularMoviesContract.PopularMoviesEntry.MOVIE_ID
                     + " =" + data.id, null
             );
-            updateFavoriteStar(false);
+            isMarkedFav = false;
+            updateFavoriteStar(isMarkedFav);
 
         } else {
             /* Insert id to Favorite table to mark it as Favorite*/
             ContentValues values = new ContentValues();
             values.put(PopularMoviesContract.PopularMoviesEntry.MOVIE_ID, data.id);
             context.getContentResolver().insert(PopularMoviesContract.PopularMoviesEntry.CONTENT_URI, values);
-            updateFavoriteStar(true);
+            isMarkedFav = true;
+            updateFavoriteStar(isMarkedFav);
 
         }
     }
@@ -129,7 +151,7 @@ public class PopularMovieDetailActivity extends AppCompatActivity {
             if (!TextUtils.isEmpty(trailerToShare)) {
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
-//                shareIntent.putExtra(Intent.EXTRA_TEXT, );
+                shareIntent.putExtra(Intent.EXTRA_TEXT, trailerToShare);
                 shareIntent.setType("text/plain");
                 startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.share_via)));
             } else {
@@ -137,8 +159,16 @@ public class PopularMovieDetailActivity extends AppCompatActivity {
             }
             return true;
         }
+        if (id == android.R.id.home) {
+            finish();
+        }
 
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void shareTrailer(String s) {
+        trailerToShare = s;
+    }
 }

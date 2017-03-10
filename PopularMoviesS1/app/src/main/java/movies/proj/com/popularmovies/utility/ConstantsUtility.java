@@ -6,15 +6,15 @@ import movies.proj.com.popularmovies.data.PopularMovies;
  * Created by Neha on 2/6/2017.
  */
 public class ConstantsUtility {
-    public static int SELECTED_MOVIE_ID = 0;
 
     //--------------- Network Constants---------------//
 
     public static String BASE_URL = "http://api.themoviedb.org/3/movie";
     public static final String POPULAR_URL = "popular";
     public static final String TOP_RATED_URL = "top_rated";
-    public static final String API_KEY = "864a8cd60556e8c00b769d63261384c1";
+    public static final String API_KEY = "";
     public static final String IMG_BASE_URL = "http://image.tmdb.org/t/p/";
+    public static final String REVIEWS_ENDPOINT = "reviews";
 
 
     //------------------------ Picasso Image Constants---------//
@@ -24,11 +24,7 @@ public class ConstantsUtility {
 
 
     //------------- Intents Constants ---------------------//
-//    public static final String INTENT_TITLE = "title";
-//    public static final String INTENT_RELEASE_DATE = "release_date";
-//    public static final String INTENT_THUMB_URL = "thumb_url";
-//    public static final String INTENT_RATING = "rating";
-//    public static final String INTENT_OVERVIEW = "overview";
+
     public static final String INTENT_MOVIE_LIST = "movie_list";
     public static final String INTENT_MOVIE_DATA = "intent_movies";
 
@@ -52,9 +48,16 @@ public class ConstantsUtility {
     public static final String TRAILER_ID = "id";
     public static final String TRAILER_KEY = "key";
 
+    public static final String REVIEW_ID = "id";
+    public static final String REVIEW_CONTENT = "content";
+    public static final String REVIEW_AUTHOR = "author";
+    public static final String REVIEW_URL = "url";
+
 
     /* Define end point to get particular type of movie list*/
     public static String[] MOVIE_SORT_ENDPOINT = new String[]{POPULAR_URL, TOP_RATED_URL};
+    public static PopularMovies SELECTED_MOVIE_DETAIL_DATA;
 
 
+    public static final String IS_FAVORITE ="is_fav";
 }

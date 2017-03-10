@@ -3,6 +3,7 @@ package movies.proj.com.popularmovies.activity.main;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -53,6 +54,8 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
     ProgressBar pBar;
     @BindView(R.id.layout_no_movie)
     LinearLayout no_movie_view;
+//    @BindView(R.id.toolbar)
+//    Toolbar toolbar;
     private int movieSortType = 0;
     private LoaderManager.LoaderCallbacks<ArrayList<PopularMovies>> callback = PopularMoviesActivity.this;
     private Bundle bundleForLoader = null;
@@ -63,10 +66,11 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
 
         // Initialize all the required resources by calling initResources()
-        initResources();
+        initResources(savedInstanceState);
     }
 
 
@@ -99,11 +103,14 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
                         break;
                     case 2:
                         movieSortType = 2;
+                        //Get list of all favorite movies from database..
                         listTobeSort = getMoviesListBySortTypeFromDB();
+
                         if (listTobeSort.size() == 0)
                             no_movie_view.setVisibility(View.VISIBLE);
                         else
                             no_movie_view.setVisibility(View.GONE);
+                        /*Populate data on list to show favorite movies..*/
                         popularMoviesAdapter = new PopularMoviesAdapter(PopularMoviesActivity.this, listTobeSort, clickHandler);
                         mRecyclerView.setAdapter(popularMoviesAdapter);
                 }
@@ -122,25 +129,32 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
     /*
     Initializes all the required resources of Activity
      */
-    private void initResources() {
+    private void initResources(Bundle data) {
+
         ButterKnife.bind(this);
         mRecyclerView.setHasFixedSize(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, new Utils().numberOfColumsForGridView(this));
         mRecyclerView.setLayoutManager(gridLayoutManager);
         clickHandler = this;
+        /* Get sved Instance data , available for orientation change*/
+        if (data != null) {
+            listTobeSort = data.getParcelableArrayList(ConstantsUtility.INTENT_MOVIE_DATA);
+        }
+        else
 
         /*
          * Ensures a loader is initialized and active. If the loader doesn't already exist, one is
          * created and (if the activity/fragment is currently started) starts the loader. Otherwise
          * the last created loader is re-used.
          */
+            getSupportLoaderManager().initLoader(MOVIES_LOADER_ID, bundleForLoader, callback);
 
-        getSupportLoaderManager().initLoader(MOVIES_LOADER_ID, bundleForLoader, callback);
+
     }
 
     private String getDataFromServer() {
         String dataString = null;
-        URL url = NetworkUtils.buildUrl(movieSortType);
+        URL url = NetworkUtils.buildUrlForMovies(movieSortType);
         try {
             dataString = NetworkUtils.getResponseFromHttUrl(url);
         } catch (IOException e) {
@@ -175,6 +189,12 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
     @Override
     public void onLoaderReset(Loader<ArrayList<PopularMovies>> loader) {
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(ConstantsUtility.INTENT_MOVIE_DATA,listTobeSort);
     }
 
     @Override
@@ -296,9 +316,9 @@ public class PopularMoviesActivity extends AppCompatActivity implements PopularM
 
                 Cursor moviecursor = getContentResolver().query(PopularMoviesContract.PopularMoviesEntry.CONTENT_URI,
                         null, PopularMoviesContract.PopularMoviesEntry.MOVIE_ID
-                        + " =" + id, null, null);
+                                + " =" + id, null, null);
                 boolean adult = false, video = false;
-                if(moviecursor!=null && moviecursor.getCount()>0) {
+                if (moviecursor != null && moviecursor.getCount() > 0) {
                     if (moviecursor.moveToFirst())
                         do {
                             if (moviecursor.getInt(moviecursor.getColumnIndexOrThrow(PopularMoviesContract.PopularMoviesEntry.IS_ADULT)) == 1)

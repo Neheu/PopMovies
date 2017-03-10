@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
     android:fitsSystemWindows="true"
     tools:context=".activity.movie_details.PopularMovieDetailActivity"
     tools:ignore="MergeRootFrame">
@@ -26,8 +25,6 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@+id/toolbar">
 
-
-
             <ImageView
                 android:id="@+id/movie_backdrop"
                 android:layout_width="match_parent"
@@ -45,20 +42,22 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
+    <FrameLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/movie_detail_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+/>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/mark_fav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:src="@drawable/ic_unfavorite"
-        app:layout_anchor="@id/app_bar"
+        app:layout_anchor="@id/movie_detail_container"
         app:layout_anchorGravity="bottom|right|end"
         android:onClick="markFavMovieClickHandler"/>
-
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/movie_detail_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </android.support.design.widget.CoordinatorLayout>

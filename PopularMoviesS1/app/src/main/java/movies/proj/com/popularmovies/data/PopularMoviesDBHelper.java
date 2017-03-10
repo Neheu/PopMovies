@@ -12,6 +12,8 @@ import movies.proj.com.popularmovies.utility.DatabaseUtils;
 import static movies.proj.com.popularmovies.utility.DatabaseUtils.DATABASE_NAME;
 import static movies.proj.com.popularmovies.utility.DatabaseUtils.TABLE_FAV_MOVIES;
 import static movies.proj.com.popularmovies.utility.DatabaseUtils.TABLE_MOVIES;
+import static movies.proj.com.popularmovies.utility.DatabaseUtils.TABLE_REVIEWS;
+import static movies.proj.com.popularmovies.utility.DatabaseUtils.TABLE_TRAILERS;
 
 /**
  * Created by ${Neha} on 2/23/2017.
@@ -31,6 +33,8 @@ public class PopularMoviesDBHelper extends SQLiteOpenHelper {
         //Create table to store movies data
         db.execSQL(DatabaseUtils.CREATE_TABLE_MOVIES);
         db.execSQL(DatabaseUtils.CREATE_TABLE_FAVORITE_MOVIES);
+        db.execSQL(DatabaseUtils.CREATE_TABLE_MOVIES_TRAILER);
+        db.execSQL(DatabaseUtils.CREATE_TABLE_MOVIES_REVIEWS);
 
     }
 
@@ -38,6 +42,8 @@ public class PopularMoviesDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(DatabaseUtils.DROP_TABLE_MOVIES);
         db.execSQL(DatabaseUtils.DROP_TABLE_FAV_MOVIES);
+        db.execSQL(DatabaseUtils.DROP_TABLE_TRAILERS);
+        db.execSQL(DatabaseUtils.DROP_TABLE_REVIEWS);
         onCreate(db);
     }
 
@@ -66,14 +72,33 @@ public class PopularMoviesDBHelper extends SQLiteOpenHelper {
         context.getContentResolver().insert(PopularMoviesContract.PopularMoviesEntry.CONTENT_URI, contentValues);
     }
 
-    public void insertFavMovie(PopularMovies dataHolder) {
+    public void insertMovieTrailer(MovieTrailers dataHolder) {
 
         // Create new empty ContentValues object
         ContentValues contentValues = new ContentValues();
         // Put the movie data into the ContentValues
 
-        contentValues.put(PopularMoviesContract.PopularMoviesEntry.MOVIE_ID, dataHolder.id);
-        PopularMoviesContantProvider.tableToProcess(TABLE_FAV_MOVIES);
+        contentValues.put(PopularMoviesContract.PopularMoviesEntry.MOVIE_ID, dataHolder.movie_id);
+        contentValues.put(PopularMoviesContract.PopularMoviesEntry.TRAILER_ID, dataHolder.id);
+        contentValues.put(PopularMoviesContract.PopularMoviesEntry.TRAILER_KEY, dataHolder.key);
+        PopularMoviesContantProvider.tableToProcess(TABLE_TRAILERS);
+
+        context.getContentResolver().insert(PopularMoviesContract.PopularMoviesEntry.CONTENT_URI, contentValues);
+    }
+
+    public void insertMovieReview(MovieReviews dataHolder) {
+
+        // Create new empty ContentValues object
+        ContentValues contentValues = new ContentValues();
+        // Put the movie data into the ContentValues
+
+        contentValues.put(PopularMoviesContract.PopularMoviesEntry.MOVIE_ID, dataHolder.movieId);
+        contentValues.put(PopularMoviesContract.PopularMoviesEntry.REVIEW_ID, dataHolder.reviewId);
+        contentValues.put(PopularMoviesContract.PopularMoviesEntry.REVIEW_AUTHOR, dataHolder.author);
+        contentValues.put(PopularMoviesContract.PopularMoviesEntry.REVIEW_CONTENT, dataHolder.content);
+        contentValues.put(PopularMoviesContract.PopularMoviesEntry.REVIEW_URL, dataHolder.url);
+
+        PopularMoviesContantProvider.tableToProcess(TABLE_REVIEWS);
 
         context.getContentResolver().insert(PopularMoviesContract.PopularMoviesEntry.CONTENT_URI, contentValues);
     }
@@ -88,12 +113,12 @@ public class PopularMoviesDBHelper extends SQLiteOpenHelper {
                 new String[]{PopularMoviesContract.PopularMoviesEntry.MOVIE_ID}, selection, null,
                 null);
 
-        if (cursor.getCount()>0) {
-                isMarked = true;
-                cursor.close();
-            } else {
-                isMarked = false;
-            }
+        if (cursor.getCount() > 0) {
+            isMarked = true;
+            cursor.close();
+        } else {
+            isMarked = false;
+        }
 
         return isMarked;
     }

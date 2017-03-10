@@ -11,6 +11,8 @@ public class DatabaseUtils {
     public static final int DATABASE_VERSION = 1;
     public static final String TABLE_MOVIES = "movies";
     public static final String TABLE_FAV_MOVIES = "fav_movies";
+    public static final String TABLE_TRAILERS = "movies_trailer";
+    public static final String TABLE_REVIEWS = "movies_reviews";
 
 
     //Create table query for POPULAR MOVIES data
@@ -41,13 +43,38 @@ public class DatabaseUtils {
             "CREATE TABLE " + TABLE_FAV_MOVIES
                     + " ("
                     + PopularMoviesEntry._ID + " INTEGER PRIMARY KEY, "
-                    + PopularMoviesEntry.MOVIE_ID + " INTEGER NOT NULL "
+                    + PopularMoviesEntry.MOVIE_ID + " INTEGER NOT NULL, "
+                    + "UNIQUE (" + PopularMoviesEntry.MOVIE_ID + ") ON CONFLICT REPLACE"
                     + " )";
+    //Create table to store movies trailer
+    public static final String CREATE_TABLE_MOVIES_TRAILER =
+            "CREATE TABLE " + TABLE_TRAILERS
+                    + " ("
+                    + PopularMoviesEntry._ID + " INTEGER PRIMARY KEY, "
+                    + PopularMoviesEntry.MOVIE_ID + " INTEGER NOT NULL, "
+                    + PopularMoviesEntry.TRAILER_ID + " TEXT NOT NULL,"
+                    + PopularMoviesEntry.TRAILER_KEY + " TEXT NOT NULL, "
+                    + "UNIQUE (" + PopularMoviesEntry.TRAILER_ID + ") ON CONFLICT REPLACE"
+                    + " )";
+    //Create table to store movies reviews
+    public static final String CREATE_TABLE_MOVIES_REVIEWS =
+            "CREATE TABLE " + TABLE_REVIEWS
+                    + " ("
+                    + PopularMoviesEntry._ID + " INTEGER PRIMARY KEY, "
+                    + PopularMoviesEntry.MOVIE_ID + " INTEGER NOT NULL, "
+                    + PopularMoviesEntry.REVIEW_ID + " TEXT NOT NULL,"
+                    + PopularMoviesEntry.REVIEW_AUTHOR + " TEXT NOT NULL,"
+                    + PopularMoviesEntry.REVIEW_CONTENT + " TEXT NOT NULL,"
+                    + PopularMoviesEntry.REVIEW_URL + " TEXT NOT NULL,"
+                    + "UNIQUE (" + PopularMoviesEntry.REVIEW_ID + ") ON CONFLICT REPLACE"
 
+                    + " )";
 
     //Drop movie table query
     public static final String DROP_TABLE_MOVIES = "DROP TABLE IF EXISTS " + TABLE_MOVIES;
     public static final String DROP_TABLE_FAV_MOVIES = "DROP TABLE IF EXISTS " + TABLE_FAV_MOVIES;
+    public static final String DROP_TABLE_TRAILERS = "DROP TABLE IF EXISTS " + TABLE_TRAILERS;
+    public static final String DROP_TABLE_REVIEWS = "DROP TABLE IF EXISTS " + TABLE_REVIEWS;
 
 
 }

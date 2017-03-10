@@ -34,7 +34,7 @@ public class NetworkUtils {
     by using api key
     @return path (url) of movie server.
      */
-    public static URL buildUrl(int type) {
+    public static URL buildUrlForMovies(int type) {
         String appendPath = ConstantsUtility.MOVIE_SORT_ENDPOINT[type];
         Uri uri = Uri.parse(ConstantsUtility.BASE_URL).buildUpon()
                 .appendEncodedPath(appendPath)
@@ -49,8 +49,8 @@ public class NetworkUtils {
         return movieUrl;
     }
 
-    public static URL buildUrlTrailes(int id) {
-        String appendPath = video;
+    public static URL buildUrl(int id, String pathToAppend) {
+        String appendPath = pathToAppend;
 
         Uri uri = Uri.parse(ConstantsUtility.BASE_URL).buildUpon()
                 .appendPath(String.valueOf(id))
